@@ -1,8 +1,6 @@
 name := "sbt-dependency-lock"
 organization := "software.purpledragon"
 
-version := "0.1-SNAPSHOT"
-
 enablePlugins(SbtPlugin)
 
 val circeVersion = "0.11.1"
@@ -22,3 +20,34 @@ scriptedLaunchOpts := { scriptedLaunchOpts.value ++
 }
 
 scapegoatVersion in ThisBuild := "1.3.11"
+
+developers := List(
+  Developer("stringbean", "Michael Stringer", "@the_stringbean", url("https://github.com/stringbean"))
+)
+
+homepage := Some(url("https://github.com/stringbean/sbt-dependency-lock"))
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/stringbean/sbt-dependency-lock"),
+    "https://github.com/stringbean/sbt-dependency-lock.git"))
+
+bintrayPackageLabels := Seq("sbt", "sbt-plugin", "lockfile")
+
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  releaseStepInputTask(scripted),
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
+)
