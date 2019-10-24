@@ -29,21 +29,21 @@ object DependencyLockPlugin extends AutoPlugin {
     dependencyLockRead := {
       val src = dependencyLockFile.value
       val deps = DependencyLockIO.readLockFile(src)
-      println(s"deps: $deps")
-
       deps
     },
     dependencyLockCheck := {
+      val logger = streams.value.log
       val updateReport = update.value
 
       val currentFile = dependencyLockRead.value.getOrElse(sys.error("no lock file"))
       val updatedFile = DependencyUtils.resolve(updateReport, thisProject.value.configurations.map(_.toConfigRef))
 
-      if (currentFile.dependencies ==updatedFile.dependencies) {
-        println("all's good")
+      if (currentFile.dependencies == updatedFile.dependencies) {
+        logger.info("Dependency lock check passed")
         true
       } else {
-        println("not good")
+        logger.warn("Dependency lock check failed")
+        // TODO output info?
         false
       }
     }

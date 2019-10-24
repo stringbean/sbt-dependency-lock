@@ -9,4 +9,7 @@ object Decoders {
 
   implicit val resolvedDependencyDecoder: Decoder[ResolvedDependency] = deriveDecoder[ResolvedDependency]
   implicit val resolvedDependencyEncoder: Encoder[ResolvedDependency] = deriveEncoder[ResolvedDependency]
+
+  implicit val resolvedArtifactDecoder: Decoder[ResolvedArtifact] = deriveDecoder[ResolvedArtifact]
+  implicit val resolvedArtifactEncoder: Encoder[ResolvedArtifact] = deriveEncoder[ResolvedArtifact]
 }
