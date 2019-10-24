@@ -26,7 +26,7 @@ object DependencyUtils {
   def resolve(updateReport: UpdateReport, configs: Seq[ConfigRef]): DependencyLockFile = {
     val configurations = updateReport.configurations.filter(config => configs.contains(config.configuration))
 
-    val checksumCache = mutable.Map[File, String]()
+    val checksumCache = mutable.Map.empty[File, String]
 
     val configModules = configurations map { conf =>
       conf.configuration.name -> conf.modules.map(toResolvedDependency(_, checksumCache)).sorted

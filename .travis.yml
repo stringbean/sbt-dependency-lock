@@ -19,4 +19,4 @@ jobs:
     - stage: Test
       script: sbt scripted
     - stage: Style Check
-      script: sbt headerCheck
+      script: sbt headerCheck scapegoat
