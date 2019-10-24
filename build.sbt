@@ -16,3 +16,7 @@ libraryDependencies ++= Seq(
 organizationName := "Michael Stringer"
 startYear := Some(2019)
 licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+
+scriptedLaunchOpts := { scriptedLaunchOpts.value ++
+  Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+}

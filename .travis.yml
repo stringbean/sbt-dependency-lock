@@ -16,7 +16,7 @@ before_cache:
 
 jobs:
   include:
-    - stage: Compile
-      script: sbt compile
+    - stage: Test
+      script: sbt scripted
     - stage: Style Check
       script: sbt headerCheck
