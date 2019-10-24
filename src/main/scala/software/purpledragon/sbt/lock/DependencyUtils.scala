@@ -29,7 +29,7 @@ object DependencyUtils {
     val checksumCache = mutable.Map[File, String]()
 
     val configModules = configurations map { conf =>
-      conf.configuration.name -> conf.modules.map(toResolvedDependency(_, checksumCache))
+      conf.configuration.name -> conf.modules.map(toResolvedDependency(_, checksumCache)).sorted
     }
 
     DependencyLockFile(1, Instant.now(), configModules.toMap)

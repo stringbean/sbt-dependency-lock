@@ -27,7 +27,7 @@ object DependencyLockPlugin extends AutoPlugin {
     val dependencyLockWrite = taskKey[File]("write dependencies to lock file")
     val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lock file")
 
-    val dependencyLockCheck = taskKey[Boolean]("check if dependency lock is up to date")
+    val dependencyLockCheck = taskKey[Unit]("check if dependency lock is up to date")
   }
 
   import autoImport._
@@ -56,11 +56,9 @@ object DependencyLockPlugin extends AutoPlugin {
 
       if (currentFile.dependencies == updatedFile.dependencies) {
         logger.info("Dependency lock check passed")
-        true
       } else {
-        logger.warn("Dependency lock check failed")
         // TODO output info?
-        false
+        sys.error("Dependency lock check failed")
       }
     }
   )

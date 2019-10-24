@@ -1,16 +1,16 @@
 {
   "lockVersion" : 1,
-  "timestamp" : "2019-10-24T08:53:39.822Z",
+  "timestamp" : "2019-10-24T12:24:55.659Z",
   "dependencies" : {
     "test" : [
       {
-        "org" : "org.scalatest",
-        "name" : "scalatest_2.12",
-        "version" : "3.0.8",
+        "org" : "org.apache.commons",
+        "name" : "commons-lang3",
+        "version" : "3.9",
         "artifacts" : [
           {
-            "name" : "scalatest_2.12",
-            "hash" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f"
+            "name" : "commons-lang3",
+            "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
           }
         ]
       },
@@ -26,13 +26,13 @@
         ]
       },
       {
-        "org" : "org.scalactic",
-        "name" : "scalactic_2.12",
-        "version" : "3.0.8",
+        "org" : "org.scala-lang",
+        "name" : "scala-reflect",
+        "version" : "2.12.10",
         "artifacts" : [
           {
-            "name" : "scalactic_2.12",
-            "hash" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277"
+            "name" : "scala-reflect",
+            "hash" : "sha1:14cb7beb516cd8e07716133668c427792122c926"
           }
         ]
       },
@@ -48,24 +48,24 @@
         ]
       },
       {
-        "org" : "org.apache.commons",
-        "name" : "commons-lang3",
-        "version" : "3.9",
+        "org" : "org.scalactic",
+        "name" : "scalactic_2.12",
+        "version" : "3.0.8",
         "artifacts" : [
           {
-            "name" : "commons-lang3",
-            "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
+            "name" : "scalactic_2.12",
+            "hash" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277"
           }
         ]
       },
       {
-        "org" : "org.scala-lang",
-        "name" : "scala-reflect",
-        "version" : "2.12.10",
+        "org" : "org.scalatest",
+        "name" : "scalatest_2.12",
+        "version" : "3.0.8",
         "artifacts" : [
           {
-            "name" : "scala-reflect",
-            "hash" : "sha1:14cb7beb516cd8e07716133668c427792122c926"
+            "name" : "scalatest_2.12",
+            "hash" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f"
           }
         ]
       }
