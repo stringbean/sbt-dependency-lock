@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock
+package software.purpledragon.sbt.lock.model
 
-import java.time.Instant
-
-final case class DependencyLockFile(
-    lockVersion: Int,
-    timestamp: Instant,
-    dependencies: Map[String, Seq[ResolvedDependency]])
+final case class ResolvedArtifact(name: String, hash: String)

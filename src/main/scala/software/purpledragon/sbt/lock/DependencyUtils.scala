@@ -19,6 +19,7 @@ package software.purpledragon.sbt.lock
 import java.time.Instant
 
 import sbt._
+import software.purpledragon.sbt.lock.model.{DependencyLockFile, ResolvedArtifact, ResolvedDependency}
 
 import scala.collection.{immutable, mutable}
 

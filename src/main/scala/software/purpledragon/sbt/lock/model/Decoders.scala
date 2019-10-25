@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock
+package software.purpledragon.sbt.lock.model
 
 import io.circe._
 import io.circe.generic.semiauto._

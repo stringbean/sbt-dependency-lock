@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock
+package software.purpledragon.sbt.lock.model
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -25,5 +25,3 @@ final case class ResolvedDependency(org: String, name: String, version: String, 
     (org, name, version) compare (that.org, that.name, that.version)
   }
 }
-
-final case class ResolvedArtifact(name: String, hash: String)

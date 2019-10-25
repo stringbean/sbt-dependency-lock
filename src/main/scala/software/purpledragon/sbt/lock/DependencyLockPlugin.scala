@@ -18,6 +18,7 @@ package software.purpledragon.sbt.lock
 
 import sbt.Keys._
 import sbt._
+import software.purpledragon.sbt.lock.model.DependencyLockFile
 
 object DependencyLockPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
