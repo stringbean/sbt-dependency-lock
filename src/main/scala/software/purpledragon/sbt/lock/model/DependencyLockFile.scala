@@ -17,8 +17,22 @@
 package software.purpledragon.sbt.lock.model
 
 import java.time.Instant
+import java.util.Objects
 
 final case class DependencyLockFile(
     lockVersion: Int,
     timestamp: Instant,
-    dependencies: Map[String, Seq[ResolvedDependency]])
+    configurations: Seq[String],
+    dependencies: Seq[ResolvedDependency]) {
+
+  override def hashCode(): Int = Objects.hash(int2Integer(lockVersion), configurations, dependencies)
+
+  override def equals(obj: Any): Boolean = {
+    obj match {
+      case other: DependencyLockFile =>
+        lockVersion == other.lockVersion && configurations == other.configurations && dependencies == other.dependencies
+      case _ =>
+        false
+    }
+  }
+}

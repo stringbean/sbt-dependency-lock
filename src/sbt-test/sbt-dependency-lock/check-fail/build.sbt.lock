@@ -1,126 +1,101 @@
 {
   "lockVersion" : 1,
-  "timestamp" : "2019-10-24T12:24:55.659Z",
-  "dependencies" : {
-    "test" : [
-      {
-        "org" : "org.apache.commons",
-        "name" : "commons-lang3",
-        "version" : "3.9",
-        "artifacts" : [
-          {
-            "name" : "commons-lang3",
-            "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
-          }
-        ]
-      },
-      {
-        "org" : "org.scala-lang",
-        "name" : "scala-library",
-        "version" : "2.12.10",
-        "artifacts" : [
-          {
-            "name" : "scala-library",
-            "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
-          }
-        ]
-      },
-      {
-        "org" : "org.scala-lang",
-        "name" : "scala-reflect",
-        "version" : "2.12.10",
-        "artifacts" : [
-          {
-            "name" : "scala-reflect",
-            "hash" : "sha1:14cb7beb516cd8e07716133668c427792122c926"
-          }
-        ]
-      },
-      {
-        "org" : "org.scala-lang.modules",
-        "name" : "scala-xml_2.12",
-        "version" : "1.2.0",
-        "artifacts" : [
-          {
-            "name" : "scala-xml_2.12",
-            "hash" : "sha1:5d38ac30beb8420dd395c0af447ba412158965e6"
-          }
-        ]
-      },
-      {
-        "org" : "org.scalactic",
-        "name" : "scalactic_2.12",
-        "version" : "3.0.8",
-        "artifacts" : [
-          {
-            "name" : "scalactic_2.12",
-            "hash" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277"
-          }
-        ]
-      },
-      {
-        "org" : "org.scalatest",
-        "name" : "scalatest_2.12",
-        "version" : "3.0.8",
-        "artifacts" : [
-          {
-            "name" : "scalatest_2.12",
-            "hash" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f"
-          }
-        ]
-      }
-    ],
-    "provided" : [
-    ],
-    "optional" : [
-    ],
-    "compile" : [
-      {
-        "org" : "org.apache.commons",
-        "name" : "commons-lang3",
-        "version" : "3.9",
-        "artifacts" : [
-          {
-            "name" : "commons-lang3",
-            "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
-          }
-        ]
-      },
-      {
-        "org" : "org.scala-lang",
-        "name" : "scala-library",
-        "version" : "2.12.10",
-        "artifacts" : [
-          {
-            "name" : "scala-library",
-            "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
-          }
-        ]
-      }
-    ],
-    "runtime" : [
-      {
-        "org" : "org.apache.commons",
-        "name" : "commons-lang3",
-        "version" : "3.9",
-        "artifacts" : [
-          {
-            "name" : "commons-lang3",
-            "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
-          }
-        ]
-      },
-      {
-        "org" : "org.scala-lang",
-        "name" : "scala-library",
-        "version" : "2.12.10",
-        "artifacts" : [
-          {
-            "name" : "scala-library",
-            "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
-          }
-        ]
-      }
-    ]
-  }
+  "timestamp" : "2019-10-28T17:12:35.793Z",
+  "configurations" : [
+    "compile",
+    "optional",
+    "provided",
+    "runtime",
+    "test"
+  ],
+  "dependencies" : [
+    {
+      "org" : "org.scala-lang",
+      "name" : "scala-library",
+      "version" : "2.12.10",
+      "artifacts" : [
+        {
+          "name" : "scala-library",
+          "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
+        }
+      ],
+      "configurations" : [
+        "test",
+        "compile",
+        "runtime"
+      ]
+    },
+    {
+      "org" : "org.scalactic",
+      "name" : "scalactic_2.12",
+      "version" : "3.0.8",
+      "artifacts" : [
+        {
+          "name" : "scalactic_2.12",
+          "hash" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277"
+        }
+      ],
+      "configurations" : [
+        "test"
+      ]
+    },
+    {
+      "org" : "org.scala-lang",
+      "name" : "scala-reflect",
+      "version" : "2.12.10",
+      "artifacts" : [
+        {
+          "name" : "scala-reflect",
+          "hash" : "sha1:14cb7beb516cd8e07716133668c427792122c926"
+        }
+      ],
+      "configurations" : [
+        "test"
+      ]
+    },
+    {
+      "org" : "org.scalatest",
+      "name" : "scalatest_2.12",
+      "version" : "3.0.8",
+      "artifacts" : [
+        {
+          "name" : "scalatest_2.12",
+          "hash" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f"
+        }
+      ],
+      "configurations" : [
+        "test"
+      ]
+    },
+    {
+      "org" : "org.apache.commons",
+      "name" : "commons-lang3",
+      "version" : "3.9",
+      "artifacts" : [
+        {
+          "name" : "commons-lang3",
+          "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
+        }
+      ],
+      "configurations" : [
+        "test",
+        "compile",
+        "runtime"
+      ]
+    },
+    {
+      "org" : "org.scala-lang.modules",
+      "name" : "scala-xml_2.12",
+      "version" : "1.2.0",
+      "artifacts" : [
+        {
+          "name" : "scala-xml_2.12",
+          "hash" : "sha1:5d38ac30beb8420dd395c0af447ba412158965e6"
+        }
+      ],
+      "configurations" : [
+        "test"
+      ]
+    }
+  ]
 }

@@ -25,18 +25,41 @@ import scala.collection.{immutable, mutable}
 
 object DependencyUtils {
   def resolve(updateReport: UpdateReport, configs: Seq[ConfigRef]): DependencyLockFile = {
-    val configurations = updateReport.configurations.filter(config => configs.contains(config.configuration))
+    val configurations: immutable.Seq[ConfigurationReport] =
+      updateReport.configurations.filter(config => configs.contains(config.configuration))
 
     val checksumCache = mutable.Map.empty[File, String]
 
-    val configModules = configurations map { conf =>
-      conf.configuration.name -> conf.modules.map(toResolvedDependency(_, checksumCache)).sorted
+    val resolvedDependencies = configurations.foldLeft(Map.empty[DependencyRef, ResolvedDependency]) { (acc, conf) =>
+      val configName = conf.configuration.name
+
+      conf.modules.foldLeft(acc) { (acc2, module) =>
+        resolveModuleForConfig(acc2, configName, module, checksumCache)
+      }
     }
 
-    DependencyLockFile(1, Instant.now(), configModules.toMap)
+    DependencyLockFile(
+      1,
+      Instant.now(),
+      configurations.map(_.configuration.name).sorted,
+      resolvedDependencies.values.toSeq)
   }
 
-  private def toResolvedDependency(
+  private def resolveModuleForConfig(
+      acc: Map[DependencyRef, ResolvedDependency],
+      configuration: String,
+      module: ModuleReport,
+      checksumCache: mutable.Map[File, String]): Map[DependencyRef, ResolvedDependency] = {
+
+    val ref = DependencyRef(module.module)
+    val dep = acc
+      .getOrElse(ref, generateResolvedDependency(module, checksumCache))
+      .withConfiguration(configuration)
+
+    acc.updated(ref, dep)
+  }
+
+  private def generateResolvedDependency(
       module: ModuleReport,
       checksumCache: mutable.Map[File, String]): ResolvedDependency = {
 
@@ -46,8 +69,16 @@ object DependencyUtils {
         ResolvedArtifact(artifact.name, hash)
     }
 
-    ResolvedDependency(module.module.organization, module.module.name, module.module.revision, artifacts)
+    ResolvedDependency(module.module.organization, module.module.name, module.module.revision, artifacts, Set.empty)
   }
 
   private def hashFile(file: File): String = s"sha1:${Hash.toHex(Hash(file))}"
+
+  private case class DependencyRef(org: String, name: String, version: String)
+
+  private object DependencyRef {
+    def apply(module: ModuleID): DependencyRef = {
+      DependencyRef(module.organization, module.name, module.revision)
+    }
+  }
 }
