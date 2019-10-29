@@ -30,13 +30,14 @@ object DependencyUtils {
 
     val checksumCache = mutable.Map.empty[File, String]
 
-    val resolvedDependencies = configurations.foldLeft(Map.empty[DependencyRef, ResolvedDependency]) { (acc, conf) =>
-      val configName = conf.configuration.name
+    val resolvedDependencies =
+      configurations.foldLeft(Map.empty[DependencyRef, ResolvedDependency]) { (acc, conf) =>
+        val configName = conf.configuration.name
 
-      conf.modules.foldLeft(acc) { (acc2, module) =>
-        resolveModuleForConfig(acc2, configName, module, checksumCache)
+        conf.modules.foldLeft(acc) { (acc2, module) =>
+          resolveModuleForConfig(acc2, configName, module, checksumCache)
+        }
       }
-    }
 
     DependencyLockFile(
       1,
@@ -66,7 +67,13 @@ object DependencyUtils {
     val artifacts: immutable.Seq[ResolvedArtifact] = module.artifacts map {
       case (artifact, file) =>
         val hash = checksumCache.getOrElseUpdate(file, hashFile(file))
-        ResolvedArtifact(artifact.name, hash)
+
+        val qualifier = artifact.`type` match {
+          case "jar" | "bundle" => ""
+          case q => s"-$q"
+        }
+
+        ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", hash)
     }
 
     ResolvedDependency(module.module.organization, module.module.name, module.module.revision, artifacts, Set.empty)
