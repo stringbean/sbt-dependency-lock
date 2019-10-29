@@ -18,10 +18,19 @@ package software.purpledragon.sbt.lock.model
 
 import scala.math.Ordered.orderingToOrdered
 
-final case class ResolvedDependency(org: String, name: String, version: String, artifacts: Seq[ResolvedArtifact])
+final case class ResolvedDependency(
+    org: String,
+    name: String,
+    version: String,
+    artifacts: Seq[ResolvedArtifact],
+    configurations: Set[String])
     extends Ordered[ResolvedDependency] {
 
   override def compare(that: ResolvedDependency): Int = {
     (org, name, version) compare (that.org, that.name, that.version)
+  }
+
+  def withConfiguration(conf: String): ResolvedDependency = {
+    copy(configurations = configurations + conf)
   }
 }
