@@ -35,4 +35,70 @@ final case class DependencyLockFile(
         false
     }
   }
+
+  def findChanges(other: DependencyLockFile): LockFileStatus = {
+    LockFileChecks.foldLeft(LockFileMatches: LockFileStatus) { (acc, check) =>
+      check(acc, other)
+    }
+  }
+
+  private type LockFileCheck = (LockFileStatus, DependencyLockFile) => LockFileStatus
+  private def LockFileChecks = Seq(checkLockVersion, checkConfigurations, checkDependencies)
+
+  private val checkLockVersion: LockFileCheck = { (acc, other) =>
+    if (lockVersion != other.lockVersion) {
+      sys.error("Incorrect lockfile version")
+    }
+
+    acc
+  }
+
+  private val checkConfigurations: LockFileCheck = { (acc, other) =>
+    if (configurations == other.configurations) {
+      acc
+    } else {
+      acc.withConfigurationsChanged(configurations, other.configurations)
+    }
+  }
+
+  private val checkDependencies: LockFileCheck = { (acc, other) =>
+    val ourDeps = dependenciesByRef(dependencies)
+    val otherDeps = dependenciesByRef(other.dependencies)
+
+    val added: Set[DependencyRef] = otherDeps.keySet -- ourDeps.keySet
+    val removed: Set[DependencyRef] = ourDeps.keySet -- otherDeps.keySet
+
+    val changed = ourDeps.keySet.intersect(otherDeps.keySet).foldLeft(Seq.empty[ChangedDependency]) {
+      (changes, depref) =>
+        val ourDep = ourDeps(depref)
+        val otherDep = otherDeps(depref)
+
+        if (ourDep != otherDep) {
+          changes :+ ChangedDependency(
+            depref.org,
+            depref.name,
+            ourDep.version,
+            otherDep.version,
+            ourDep.artifacts,
+            otherDep.artifacts,
+            ourDep.configurations,
+            otherDep.configurations)
+        } else {
+          changes
+        }
+    }
+
+    if (added.nonEmpty || removed.nonEmpty || changed.nonEmpty) {
+      acc.withDependencyChanges(
+        otherDeps.filterKeys(added.contains).values.toSeq,
+        ourDeps.filterKeys(removed.contains).values.toSeq,
+        changed)
+    } else {
+      acc
+    }
+  }
+
+  private def dependenciesByRef(deps: Seq[ResolvedDependency]): Map[DependencyRef, ResolvedDependency] = {
+    deps.map(dep => DependencyRef(dep.org, dep.name, None) -> dep).toMap
+  }
 }

@@ -16,12 +16,17 @@
 
 package software.purpledragon.sbt.lock.model
 
-import sbt.ModuleID
+case class DependencyChanges(
+    added: Seq[ResolvedDependency],
+    removed: Seq[ResolvedDependency],
+    changed: Seq[ChangedDependency])
 
-private[lock] case class DependencyRef(org: String, name: String, version: Option[String])
-
-private[lock] object DependencyRef {
-  def apply(module: ModuleID): DependencyRef = {
-    DependencyRef(module.organization, module.name, Some(module.revision))
-  }
-}
+case class ChangedDependency(
+    org: String,
+    name: String,
+    oldVersion: String,
+    newVersion: String,
+    oldArtifacts: Seq[ResolvedArtifact],
+    newArtifacts: Seq[ResolvedArtifact],
+    oldConfigurations: Set[String],
+    newConfigurations: Set[String])
