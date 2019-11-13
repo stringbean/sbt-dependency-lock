@@ -57,7 +57,9 @@ final case class DependencyLockFile(
     if (configurations == other.configurations) {
       acc
     } else {
-      acc.withConfigurationsChanged(configurations, other.configurations)
+      val added = other.configurations.filterNot(configurations.contains)
+      val removed = configurations.filterNot(other.configurations.contains)
+      acc.withConfigurationsChanged(added, removed)
     }
   }
 
