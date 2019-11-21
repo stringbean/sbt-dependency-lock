@@ -43,7 +43,7 @@ object DependencyUtils {
       1,
       Instant.now(),
       configurations.map(_.configuration.name).sorted,
-      resolvedDependencies.values.toSeq)
+      resolvedDependencies.values.toSeq.sorted)
   }
 
   private def resolveModuleForConfig(
