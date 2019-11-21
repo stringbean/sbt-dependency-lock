@@ -18,7 +18,7 @@ package software.purpledragon.sbt.lock
 
 import sbt.Keys._
 import sbt._
-import software.purpledragon.sbt.lock.model.DependencyLockFile
+import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
 
 object DependencyLockPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
@@ -55,11 +55,13 @@ object DependencyLockPlugin extends AutoPlugin {
       val currentFile = dependencyLockRead.value.getOrElse(sys.error("no lock file"))
       val updatedFile = DependencyUtils.resolve(updateReport, thisProject.value.configurations.map(_.toConfigRef))
 
-      if (currentFile == updatedFile) {
-        logger.info("Dependency lock check passed")
+      val changes = currentFile.findChanges(updatedFile)
+
+      if (changes == LockFileMatches) {
+        logger.info(changes.toShortReport)
       } else {
-        // TODO output info?
-        sys.error("Dependency lock check failed")
+        logger.warn(changes.toShortReport)
+        sys.error(changes.toLongReport)
       }
     }
   )
