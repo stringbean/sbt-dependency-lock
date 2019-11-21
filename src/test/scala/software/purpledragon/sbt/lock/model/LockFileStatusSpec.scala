@@ -97,21 +97,143 @@ class LockFileStatusSpec extends FlatSpec with Matchers {
       .toShortReport shouldBe expected
   }
 
-  "LockFileDiffers.toLongReport" should "" in pending
+  "LockFileDiffers.toLongReport" should "render 1 config added" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 config added: test""".stripMargin
+
+    LockFileMatches.withConfigurationsChanged(Seq("test"), Nil).toLongReport shouldBe expected
+  }
+
+  it should "render 1 config removed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 config removed: test""".stripMargin
+
+    LockFileMatches.withConfigurationsChanged(Nil, Seq("test")).toLongReport shouldBe expected
+  }
+
+  it should "render 1 config added and 2 configs removed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 config added: test1
+        |  2 configs removed: test2,test3""".stripMargin
+
+    LockFileMatches.withConfigurationsChanged(Seq("test1"), Seq("test2", "test3")).toLongReport shouldBe expected
+  }
+
+  it should "render 1 dependency added" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 dependency added:
+        |    com.example:artifact:1.0 (compile,test)""".stripMargin
+
+    LockFileMatches.withDependencyChanges(Seq(testDependency()), Nil, Nil).toLongReport shouldBe expected
+  }
+
+  it should "render 2 dependencies removed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  2 dependencies removed:
+        |    com.example:artifact:1.0 (compile,test)
+        |    com.example:artifact-2:1.0 (compile,test)""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(Nil, Seq(testDependency(), testDependency(name = "artifact-2")), Nil)
+      .toLongReport shouldBe expected
+  }
+
+  it should "render 1 dependency changed version" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 dependency changed:
+        |    com.example:artifact:[1.0]->[2.0] (compile,test)""".stripMargin
+
+    LockFileMatches.withDependencyChanges(Nil, Nil, Seq(testChangedDependency())).toLongReport shouldBe expected
+  }
+
+  it should "render 1 dependency changed configs" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 dependency changed:
+        |    com.example:artifact:1.0 (compile,test)->(compile)""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(
+        Nil,
+        Nil,
+        Seq(testChangedDependency(newVersion = "1.0", newConfigurations = Set("compile"))))
+      .toLongReport shouldBe expected
+  }
+
+  it should "render 1 dependency changed version and configs" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 dependency changed:
+        |    com.example:artifact:[1.0]->[2.0] (compile,test)->(compile)""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(Nil, Nil, Seq(testChangedDependency(newConfigurations = Set("compile"))))
+      .toLongReport shouldBe expected
+  }
+
+  it should "render lots of changes" in {
+    val expected =
+      """Dependency lock check failed:
+        |  1 config added: test1
+        |  2 configs removed: test2,test3
+        |  2 dependencies added:
+        |    com.example:artifact1:1.0 (compile)
+        |    com.example:artifact2:1.2 (test)
+        |  1 dependency removed:
+        |    com.example:artifact3:3.1.1 (runtime)
+        |  3 dependencies changed:
+        |    org.example:version:[1.0]->[2.0] (compile)
+        |    org.example:configs:1.0 (compile,test)->(compile)
+        |    org.example:both:[1.0]->[2.0] (compile)->(compile,test)""".stripMargin
+
+    val actual = LockFileMatches
+      .withConfigurationsChanged(Seq("test1"), Seq("test2", "test3"))
+      .withDependencyChanges(
+        Seq(
+          testDependency(name = "artifact1", configs = Set("compile")),
+          testDependency(name = "artifact2", version = "1.2", configs = Set("test"))),
+        Seq(testDependency(name = "artifact3", version = "3.1.1", configs = Set("runtime"))),
+        Seq(
+          testChangedDependency(
+            org = "org.example",
+            name = "version",
+            oldConfigurations = Set("compile"),
+            newConfigurations = Set("compile")),
+          testChangedDependency(
+            org = "org.example",
+            name = "configs",
+            newVersion = "1.0",
+            newConfigurations = Set("compile")),
+          testChangedDependency(org = "org.example", name = "both", oldConfigurations = Set("compile"))
+        )
+      )
+      .toLongReport
+
+    actual shouldBe expected
+  }
 
   private def testDependency(
       org: String = "com.example",
       name: String = "artifact",
-      version: String = "1.0"): ResolvedDependency = {
-    ResolvedDependency(org, name, version, Nil, Set.empty)
+      version: String = "1.0",
+      configs: Set[String] = Set("compile", "test")): ResolvedDependency = {
+    ResolvedDependency(org, name, version, Nil, configs)
   }
 
   private def testChangedDependency(
       org: String = "com.example",
       name: String = "artifact",
       oldVersion: String = "1.0",
-      newVersion: String = "1."): ChangedDependency = {
+      newVersion: String = "2.0",
+      oldConfigurations: Set[String] = Set("compile", "test"),
+      newConfigurations: Set[String] = Set("compile", "test")): ChangedDependency = {
 
-    ChangedDependency(org, name, oldVersion, newVersion, Nil, Nil, Set.empty, Set.empty)
+    ChangedDependency(org, name, oldVersion, newVersion, Nil, Nil, oldConfigurations, newConfigurations)
   }
 }

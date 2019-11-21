@@ -16,24 +16,35 @@
 
 package software.purpledragon.sbt.lock.util
 
-import java.text.ChoiceFormat
+import java.text.{ChoiceFormat, MessageFormat}
 import java.util.ResourceBundle
+
+import scala.math.ScalaNumber
 
 object MessageUtil {
   val messages: ResourceBundle = ResourceBundle.getBundle("messages")
 
-  def format(key: String, args: AnyRef*): String = {
-    messages.getString(key).format(args: _*)
+  def format(template: String, args: Any*): String = {
+    MessageFormat.format(template, args.map(unwrapArg): _*)
   }
 
-  def formatPlural(baseKey: String, count: Int): String = {
+  def formatMessage(key: String, args: Any*): String = {
+    format(messages.getString(key), args.map(unwrapArg): _*)
+  }
+
+  def formatPlural(baseKey: String, count: Int, args: Any*): String = {
     val formatStrings = Array(
       messages.getString(s"$baseKey.none"),
       messages.getString(s"$baseKey.singular"),
       messages.getString(s"$baseKey.multiple")
     )
 
-    val format = new ChoiceFormat(Array(0, 1, 2), formatStrings)
-    format.format(count).format(count)
+    val choice = new ChoiceFormat(Array(0, 1, 2), formatStrings)
+    format(choice.format(count), count +: args: _*)
+  }
+
+  private def unwrapArg(arg: Any): AnyRef = arg match {
+    case x: ScalaNumber => x.underlying
+    case x => x.asInstanceOf[AnyRef]
   }
 }

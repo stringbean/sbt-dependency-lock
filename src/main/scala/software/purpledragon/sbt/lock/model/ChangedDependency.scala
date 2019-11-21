@@ -24,4 +24,8 @@ case class ChangedDependency(
     oldArtifacts: Seq[ResolvedArtifact],
     newArtifacts: Seq[ResolvedArtifact],
     oldConfigurations: Set[String],
-    newConfigurations: Set[String])
+    newConfigurations: Set[String]) {
+
+  def versionChanged: Boolean = oldVersion != newVersion
+  def configurationsChanged: Boolean = oldConfigurations != newConfigurations
+}
