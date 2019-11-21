@@ -16,11 +16,6 @@
 
 package software.purpledragon.sbt.lock.model
 
-case class DependencyChanges(
-    added: Seq[ResolvedDependency],
-    removed: Seq[ResolvedDependency],
-    changed: Seq[ChangedDependency])
-
 case class ChangedDependency(
     org: String,
     name: String,

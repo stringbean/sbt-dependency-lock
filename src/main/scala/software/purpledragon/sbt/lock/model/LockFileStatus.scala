@@ -16,12 +16,19 @@
 
 package software.purpledragon.sbt.lock.model
 
+import software.purpledragon.sbt.lock.util.MessageUtil
+
+import scala.collection.mutable
+
 sealed trait LockFileStatus {
   def withConfigurationsChanged(addedConfigs: Seq[String], removedConfigs: Seq[String]): LockFileStatus
   def withDependencyChanges(
       added: Seq[ResolvedDependency],
       removed: Seq[ResolvedDependency],
       changed: Seq[ChangedDependency]): LockFileStatus
+
+  def toShortReport: String
+  def toLongReport: String
 }
 
 case object LockFileMatches extends LockFileStatus {
@@ -35,6 +42,9 @@ case object LockFileMatches extends LockFileStatus {
       changed: Seq[ChangedDependency]): LockFileStatus = {
     LockFileDiffers(Nil, Nil, added, removed, changed)
   }
+
+  override val toShortReport: String = MessageUtil.format("lock.status.success")
+  override val toLongReport: String = toShortReport
 }
 
 case class LockFileDiffers(
@@ -56,4 +66,29 @@ case class LockFileDiffers(
 
     copy(addedDependencies = added, removedDependencies = removed, changedDependencies = changed)
   }
+
+  override def toShortReport: String = {
+    val errors = mutable.Buffer[String]()
+
+    if (addedConfigs.nonEmpty || removedConfigs.nonEmpty) {
+      errors += MessageUtil.format(
+        "lock.status.configs.info",
+        MessageUtil.formatPlural("lock.status.configs", addedConfigs.size),
+        MessageUtil.formatPlural("lock.status.configs", removedConfigs.size)
+      )
+    }
+
+    if (addedDependencies.nonEmpty || removedDependencies.nonEmpty || changedDependencies.nonEmpty) {
+      errors += MessageUtil.format(
+        "lock.status.dependencies.info",
+        MessageUtil.formatPlural("lock.status.dependencies", addedDependencies.size),
+        MessageUtil.formatPlural("lock.status.dependencies", removedDependencies.size),
+        MessageUtil.formatPlural("lock.status.dependencies", changedDependencies.size)
+      )
+    }
+
+    MessageUtil.format("lock.status.failed.short", errors.mkString("\n"))
+  }
+
+  override def toLongReport: String = ???
 }
