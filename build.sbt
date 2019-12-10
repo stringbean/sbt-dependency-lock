@@ -6,7 +6,7 @@ enablePlugins(SbtPlugin)
 // target sbt 1.2.8 to allow 1.0+ compatibility
 pluginCrossBuild / sbtVersion := "1.2.8"
 
-val circeVersion = "0.11.1"
+val circeVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
