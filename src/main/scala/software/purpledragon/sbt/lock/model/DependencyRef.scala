@@ -18,7 +18,7 @@ package software.purpledragon.sbt.lock.model
 
 import sbt.ModuleID
 
-private[lock] case class DependencyRef(org: String, name: String, version: Option[String])
+private[lock] final case class DependencyRef(org: String, name: String, version: Option[String])
 
 private[lock] object DependencyRef {
   def apply(module: ModuleID): DependencyRef = {

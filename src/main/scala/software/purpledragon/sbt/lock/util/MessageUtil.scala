@@ -43,6 +43,7 @@ object MessageUtil {
     format(choice.format(count), count +: args: _*)
   }
 
+  @SuppressWarnings(Array("AsInstanceOf"))
   private def unwrapArg(arg: Any): AnyRef = arg match {
     case x: ScalaNumber => x.underlying
     case x => x.asInstanceOf[AnyRef]

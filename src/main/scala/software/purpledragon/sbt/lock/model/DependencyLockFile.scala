@@ -43,7 +43,6 @@ final case class DependencyLockFile(
   }
 
   private type LockFileCheck = (LockFileStatus, DependencyLockFile) => LockFileStatus
-  private def LockFileChecks = Seq(checkLockVersion, checkConfigurations, checkDependencies)
 
   private val checkLockVersion: LockFileCheck = { (acc, other) =>
     if (lockVersion != other.lockVersion) {
@@ -99,6 +98,8 @@ final case class DependencyLockFile(
       acc
     }
   }
+
+  private val LockFileChecks = Seq(checkLockVersion, checkConfigurations, checkDependencies)
 
   private def dependenciesByRef(deps: Seq[ResolvedDependency]): Map[DependencyRef, ResolvedDependency] = {
     deps.map(dep => DependencyRef(dep.org, dep.name, None) -> dep).toMap

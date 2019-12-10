@@ -47,7 +47,7 @@ case object LockFileMatches extends LockFileStatus {
   override val toLongReport: String = toShortReport
 }
 
-case class LockFileDiffers(
+final case class LockFileDiffers(
     addedConfigs: Seq[String],
     removedConfigs: Seq[String],
     addedDependencies: Seq[ResolvedDependency],

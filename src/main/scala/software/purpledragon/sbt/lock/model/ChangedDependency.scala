@@ -16,7 +16,7 @@
 
 package software.purpledragon.sbt.lock.model
 
-case class ChangedDependency(
+final case class ChangedDependency(
     org: String,
     name: String,
     oldVersion: String,
