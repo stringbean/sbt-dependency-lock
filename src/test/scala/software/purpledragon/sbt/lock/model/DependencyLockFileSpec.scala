@@ -18,9 +18,10 @@ package software.purpledragon.sbt.lock.model
 
 import java.time.Instant
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class DependencyLockFileSpec extends FlatSpec with Matchers {
+class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   private val EmptyLockFile = DependencyLockFile(1, Instant.now(), Nil, Nil)
   private val TestLockFile = DependencyLockFile(
     1,

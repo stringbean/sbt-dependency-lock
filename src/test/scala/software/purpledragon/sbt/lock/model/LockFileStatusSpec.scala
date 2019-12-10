@@ -16,9 +16,10 @@
 
 package software.purpledragon.sbt.lock.model
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class LockFileStatusSpec extends FlatSpec with Matchers {
+class LockFileStatusSpec extends AnyFlatSpec with Matchers {
   "LockFileMatches.toShortReport" should "output correct message" in {
     LockFileMatches.toShortReport shouldBe "Dependency lock check passed"
   }
