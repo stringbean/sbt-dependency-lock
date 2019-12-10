@@ -19,7 +19,7 @@ package software.purpledragon.sbt.lock
 import java.time.Instant
 
 import sbt._
-import software.purpledragon.sbt.lock.model.{DependencyLockFile, ResolvedArtifact, ResolvedDependency}
+import software.purpledragon.sbt.lock.model.{DependencyLockFile, DependencyRef, ResolvedArtifact, ResolvedDependency}
 
 import scala.collection.{immutable, mutable}
 
@@ -43,7 +43,7 @@ object DependencyUtils {
       1,
       Instant.now(),
       configurations.map(_.configuration.name).sorted,
-      resolvedDependencies.values.toSeq)
+      resolvedDependencies.values.toSeq.sorted)
   }
 
   private def resolveModuleForConfig(
@@ -80,12 +80,4 @@ object DependencyUtils {
   }
 
   private def hashFile(file: File): String = s"sha1:${Hash.toHex(Hash(file))}"
-
-  private case class DependencyRef(org: String, name: String, version: String)
-
-  private object DependencyRef {
-    def apply(module: ModuleID): DependencyRef = {
-      DependencyRef(module.organization, module.name, module.revision)
-    }
-  }
 }

@@ -1,0 +1,2 @@
+# lockfile has dependencies in different order but should still pass
+> dependencyLockCheck

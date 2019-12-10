@@ -3,13 +3,20 @@ organization := "software.purpledragon"
 
 enablePlugins(SbtPlugin)
 
-val circeVersion = "0.11.1"
+// target sbt 1.2.8 to allow 1.0+ compatibility
+pluginCrossBuild / sbtVersion := "1.2.8"
+
+val circeVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
   "io.circe" %% "circe-generic",
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion)
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.1.0" % Test
+)
 
 organizationName := "Michael Stringer"
 startYear := Some(2019)
