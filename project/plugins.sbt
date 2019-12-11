@@ -10,3 +10,4 @@ addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.9")
 // documentation
 addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.4.0")
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.6.8")
+addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.6.3")
