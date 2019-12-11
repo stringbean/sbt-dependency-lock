@@ -1,7 +1,10 @@
 name := "sbt-dependency-lock"
 organization := "software.purpledragon"
 
-enablePlugins(SbtPlugin)
+enablePlugins(
+  SbtPlugin,
+  ParadoxSitePlugin,
+  GhpagesPlugin)
 
 // target sbt 1.2.8 to allow 1.0+ compatibility
 pluginCrossBuild / sbtVersion := "1.2.8"
@@ -37,6 +40,7 @@ scmInfo := Some(
   ScmInfo(
     url("https://github.com/stringbean/sbt-dependency-lock"),
     "https://github.com/stringbean/sbt-dependency-lock.git"))
+git.remoteRepo := "git@github.com:stringbean/sbt-dependency-lock.git"
 
 bintrayPackageLabels := Seq("sbt", "sbt-plugin", "lockfile")
 
@@ -54,6 +58,7 @@ releaseProcess := Seq[ReleaseStep](
   commitReleaseVersion,
   tagRelease,
   publishArtifacts,
+  releaseStepTask(ghpagesPushSite),
   setNextVersion,
   commitNextVersion,
   pushChanges
