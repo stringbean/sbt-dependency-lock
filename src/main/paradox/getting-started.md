@@ -10,7 +10,6 @@ addSbtPlugin("software.purpledragon" % "sbt-dependency-lock" % "$project.version
 ```
 @@@
 
-
 And then generate a lock file with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile
 containing all dependencies (including transitive ones) to `build.sbt.lock`.
 
@@ -27,7 +26,7 @@ and check them against the lockfile.
 
 If the lockfile and current dependencies match then a success message will be printed, and the build will succeed:
 
-```
+```text
 [info] Dependency lock check passed
 ```
 
@@ -35,7 +34,7 @@ If the lockfile and current dependencies match then a success message will be pr
 
 If no lockfile can be found then an error will be printed, and the build will fail:
 
-```
+```text
 [error] (dependencyLockCheck) no lock file
 ```
 
@@ -43,7 +42,7 @@ If no lockfile can be found then an error will be printed, and the build will fa
 
 A mismatch between the lockfile and current dependencies will generate an error report summarising the differences:
 
-```
+```text
 [error] (dependencyLockCheck) Dependency lock check failed:
 [error]   3 dependencies changed:
 [error]     org.apache.commons:commons-lang3:3.9 (test)->(compile,test)
