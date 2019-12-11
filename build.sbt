@@ -1,7 +1,9 @@
 name := "sbt-dependency-lock"
 organization := "software.purpledragon"
 
-enablePlugins(SbtPlugin)
+enablePlugins(
+  SbtPlugin,
+  ParadoxSitePlugin)
 
 // target sbt 1.2.8 to allow 1.0+ compatibility
 pluginCrossBuild / sbtVersion := "1.2.8"
