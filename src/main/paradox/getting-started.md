@@ -55,26 +55,26 @@ A mismatch between the lockfile and current dependencies will generate an error 
 The error report is broken down into a number of sections:
 
 1. Configurations added:
-    ```
+    ```text
     1 config added: it
     ```
-1. Configurations removed:
-    ```
+2. Configurations removed:
+    ```text
     2 configs removed: it,war
     ```
-1. Dependencies added:
-    ```
+3. Dependencies added:
+    ```text
     2 dependencies added:
       com.example:artifact1:1.0 (compile)
       com.example:artifact2:1.2 (test)
     ```
-1. Dependencies removed:
-    ```
+4. Dependencies removed:
+    ```text
     1 dependency removed:
       com.example:artifact3:3.1.1 (runtime)
     ```
-1. Changed dependencies:
-    ```
+5. Changed dependencies:
+    ```text
     3 dependencies changed:
       org.example:version:[1.0]->[2.0] (compile)
       org.example:configs:1.0 (compile,test)->(compile)

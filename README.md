@@ -18,13 +18,13 @@ containing all dependencies (including transitive ones) to `build.sbt.lock`.
 
 The lockfile can then be checked with `sbt dependencyLockCheck`:
 
-```
+```text
 [info] Dependency lock check passed
 ```
 
 A mismatch between the lockfile and current dependencies will generate an error report:
 
-```
+```text
 [error] (dependencyLockCheck) Dependency lock check failed:
 [error]   3 dependencies changed:
 [error]     org.scala-lang.modules:scala-xml_2.12:[1.2.0]->[1.1.0] (test)
