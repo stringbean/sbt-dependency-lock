@@ -18,6 +18,8 @@ package software.purpledragon.sbt.lock
 
 import sbt.Keys._
 import sbt._
+import sbt.internal.util.ManagedLogger
+import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
 
 object DependencyLockPlugin extends AutoPlugin {
@@ -29,12 +31,20 @@ object DependencyLockPlugin extends AutoPlugin {
     val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lock file")
 
     val dependencyLockCheck = taskKey[Unit]("check if dependency lock is up to date")
+
+    val DependencyLockUpdateMode: software.purpledragon.sbt.lock.DependencyLockUpdateMode.type =
+      software.purpledragon.sbt.lock.DependencyLockUpdateMode
+    val dependencyLockAutoCheck = settingKey[DependencyLockUpdateMode]("automatically check lock file after update")
   }
 
   import autoImport._
 
+  // task names to skip auto-check if we're inside of
+  private val PluginTasks = Seq("dependencyLockWrite", "dependencyLockCheck", "dependencyLockRead")
+
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     dependencyLockFile := baseDirectory.value / "build.sbt.lock",
+    dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
     dependencyLockWrite := {
       val dest = dependencyLockFile.value
       val updateReport = update.value
@@ -49,8 +59,8 @@ object DependencyLockPlugin extends AutoPlugin {
       deps
     },
     dependencyLockCheck := {
-      val logger = streams.value.log
-      val updateReport = update.value
+      val logger: ManagedLogger = streams.value.log
+      val updateReport: UpdateReport = update.value
 
       val currentFile = dependencyLockRead.value.getOrElse(sys.error("no lock file"))
       val updatedFile = DependencyUtils.resolve(updateReport, thisProject.value.configurations.map(_.toConfigRef))
@@ -63,6 +73,47 @@ object DependencyLockPlugin extends AutoPlugin {
         logger.warn(changes.toShortReport)
         sys.error(changes.toLongReport)
       }
-    }
+    },
+    update := Def.taskDyn {
+      val report = update.value
+      val logger = streams.value.log
+
+
+      // check to see if the current command/task is one of our internal ones
+      val skipCheck = state.value.currentCommand.map(_.commandLine).exists(PluginTasks.contains)
+      val checkMode = dependencyLockAutoCheck.value
+
+      if (checkMode != DependencyLockUpdateMode.CheckDisabled && !skipCheck) {
+        logger.debug("Automatically checking lockfile")
+
+        dependencyLockRead.value match {
+          case Some(currentFile) =>
+            val updatedFile = DependencyUtils.resolve(report, thisProject.value.configurations.map(_.toConfigRef))
+
+            val changes = currentFile.findChanges(updatedFile)
+
+            (changes, checkMode) match {
+              case (LockFileMatches, _) =>
+              // check passed
+              case (_, WarnOnError) =>
+                logger.warn("Dependency lock file is outdated - please run `dependencyLockCheck` for details")
+              case (_, FailOnError) =>
+                logger.error("Dependency lock file is outdated")
+                sys.error(changes.toLongReport)
+
+              case _ =>
+              // scenario shouldn't happen - failed check, but we're not checking...
+            }
+
+          case None =>
+            logger.warn("no lockfile found - please run dependencyLockWrite")
+        }
+      }
+
+      // return the original report
+      Def.task {
+        report
+      }
+    }.value
   )
 }
