@@ -1,6 +1,7 @@
 # sbt-dependency-lock 
 [![Build Status](https://travis-ci.com/stringbean/sbt-dependency-lock.svg?branch=master)](https://travis-ci.com/stringbean/sbt-dependency-lock)
 [![Codacy grade](https://img.shields.io/codacy/grade/d45ca406c90c45c88a3a317563bc3302?label=codacy)](https://codacy.com/app/stringbean/sbt-dependency-lock)
+[![Known Vulnerabilities](https://snyk.io/test/github/stringbean/sbt-dependency-lock/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/stringbean/sbt-dependency-lock?targetFile=build.sbt)
 ![Bintray](https://img.shields.io/bintray/v/stringbean/sbt-plugins/sbt-dependency-lock?label=sbt%201.x) 
 
 An sbt plugin to create a dependency lockfile similar to `package-lock.json` for npm or `Gemfile.lock` for RubyGems.
@@ -13,8 +14,8 @@ Install the plugin by adding the following to `project/plugins.sbt`:
 addSbtPlugin("software.purpledragon" % "sbt-dependency-lock" % "<version>")
 ```
 
-And then generate a lock file with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile
-containing all dependencies (including transitive ones) to `build.sbt.lock`.
+Then generate a lockfile with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile containing
+all dependencies (including transitive ones) to `build.sbt.lock`.
 
 The lockfile can then be checked with `sbt dependencyLockCheck`:
 

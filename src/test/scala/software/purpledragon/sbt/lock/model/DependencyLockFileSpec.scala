@@ -38,7 +38,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
     )
   )
 
-  "findChanges" should "return LockFileMatches for identical lock files" in {
+  "findChanges" should "return LockFileMatches for identical lockfiles" in {
     val left = TestLockFile
     val right = left.copy()
 

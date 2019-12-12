@@ -10,7 +10,7 @@ addSbtPlugin("software.purpledragon" % "sbt-dependency-lock" % "$project.version
 ```
 @@@
 
-And then generate a lock file with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile
+And then generate a lockfile with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile
 containing all dependencies (including transitive ones) to `build.sbt.lock`.
 
 @@@ note
@@ -21,6 +21,10 @@ The generated `build.sbt.lock` file should be checked into source control with t
 
 The status of the lockfile can be checked using the `dependencyLockCheck` which will resolve the current dependencies
 and check them against the lockfile.
+
+@@@ note { title=Hint }
+Adding `dependencyLockCheck` to your CI build is a great way to catch dependency changes.
+@@@
 
 ### Valid Lockfile
 
@@ -35,7 +39,7 @@ If the lockfile and current dependencies match then a success message will be pr
 If no lockfile can be found then an error will be printed, and the build will fail:
 
 ```text
-[error] (dependencyLockCheck) no lock file
+[error] (dependencyLockCheck) no lockfile
 ```
 
 ### Lockfile Mismatch
