@@ -26,15 +26,15 @@ object DependencyLockPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
 
   object autoImport {
-    val dependencyLockFile = settingKey[File]("lock file to generate")
-    val dependencyLockWrite = taskKey[File]("write dependencies to lock file")
-    val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lock file")
+    val dependencyLockFile = settingKey[File]("lockfile to generate")
+    val dependencyLockWrite = taskKey[File]("write dependencies to lockfile")
+    val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lockfile")
 
     val dependencyLockCheck = taskKey[Unit]("check if dependency lock is up to date")
 
     val DependencyLockUpdateMode: software.purpledragon.sbt.lock.DependencyLockUpdateMode.type =
       software.purpledragon.sbt.lock.DependencyLockUpdateMode
-    val dependencyLockAutoCheck = settingKey[DependencyLockUpdateMode]("automatically check lock file after update")
+    val dependencyLockAutoCheck = settingKey[DependencyLockUpdateMode]("automatically check lockfile after update")
   }
 
   import autoImport._
@@ -62,7 +62,7 @@ object DependencyLockPlugin extends AutoPlugin {
       val logger: ManagedLogger = streams.value.log
       val updateReport: UpdateReport = update.value
 
-      val currentFile = dependencyLockRead.value.getOrElse(sys.error("no lock file"))
+      val currentFile = dependencyLockRead.value.getOrElse(sys.error("no lockfile"))
       val updatedFile = DependencyUtils.resolve(updateReport, thisProject.value.configurations.map(_.toConfigRef))
 
       val changes = currentFile.findChanges(updatedFile)
@@ -96,9 +96,9 @@ object DependencyLockPlugin extends AutoPlugin {
               case (LockFileMatches, _) =>
               // check passed
               case (_, WarnOnError) =>
-                logger.warn("Dependency lock file is outdated - please run `dependencyLockCheck` for details")
+                logger.warn("Dependency lockfile is outdated - please run `dependencyLockCheck` for details")
               case (_, FailOnError) =>
-                logger.error("Dependency lock file is outdated")
+                logger.error("Dependency lockfile is outdated")
                 sys.error(changes.toLongReport)
 
               case _ =>

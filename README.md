@@ -13,8 +13,8 @@ Install the plugin by adding the following to `project/plugins.sbt`:
 addSbtPlugin("software.purpledragon" % "sbt-dependency-lock" % "<version>")
 ```
 
-And then generate a lock file with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile
-containing all dependencies (including transitive ones) to `build.sbt.lock`.
+Then generate a lockfile with `sbt dependencyLockWrite`. This will resolve dependencies and output a lockfile containing
+all dependencies (including transitive ones) to `build.sbt.lock`.
 
 The lockfile can then be checked with `sbt dependencyLockCheck`:
 

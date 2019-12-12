@@ -13,7 +13,7 @@ checkLog := {
   val lastLog = BuiltinCommands.lastLogFile(state.value).get
   val last = IO.read(lastLog)
 
-  if (last.contains("Dependency lock file is outdated")) {
+  if (last.contains("Dependency lockfile is outdated")) {
     sys.error("check contained warning")
   }
 }
