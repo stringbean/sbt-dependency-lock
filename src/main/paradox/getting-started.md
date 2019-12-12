@@ -22,6 +22,10 @@ The generated `build.sbt.lock` file should be checked into source control with t
 The status of the lockfile can be checked using the `dependencyLockCheck` which will resolve the current dependencies
 and check them against the lockfile.
 
+@@@ note { title=Hint }
+Adding `dependencyLockCheck` to your CI build is a great way to catch dependency changes.
+@@@
+
 ### Valid Lockfile
 
 If the lockfile and current dependencies match then a success message will be printed, and the build will succeed:
