@@ -31,7 +31,7 @@
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-0.4.0
+1.0.0
 </div>
 </div>
 <div class="nav-toc">
@@ -73,7 +73,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-0.4.0
+1.0.0
 </div>
 </div>
 <div class="nav-toc">
@@ -116,8 +116,20 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><strong>Accepts:</strong> <code>java.io.File</code></li>
   <li><strong>Default:</strong> <code>baseDirectory.value / &quot;build.sbt.lock&quot;</code></li>
 </ul>
+<h3><a href="#dependencylockautocheck" name="dependencylockautocheck" class="anchor"><span class="anchor-link"></span></a>dependencyLockAutoCheck</h3>
+<ul>
+  <li><strong>Description:</strong> Controls the level of lockfile checking performed after each <code>update</code> task run.</li>
+  <li><strong>Accepts:</strong> <code>DependencyLockUpdateMode</code></li>
+  <li><strong>Default:</strong> <code>DependencyLockUpdateMode.WarnOnError</code></li>
+</ul>
+<p>The different levels of checking available are:</p>
+<ul>
+  <li><code>CheckDisabled</code>: no checks will be performed after <code>update</code>s.</li>
+  <li><code>WarnOnError</code>: a check will be performed after <code>update</code>s, and a warning printed if there are any changes.</li>
+  <li><code>FailOnError</code>: a check will be performed after <code>update</code>s, and the build will fail if there are any changes.</li>
+</ul>
 <div class="source-github">
-The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/v0.4.0/src/main/paradox/settings.md">here</a>.
+The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/v1.0.0/src/main/paradox/settings.md">here</a>.
 </div>
 
 <div class="nav-next">
@@ -200,7 +212,7 @@ The source code for this page can be found <a href="https://github.com/stringbea
 <script type="text/javascript" src="lib/prettify/prettify.js"></script>
 <script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
 <script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
-<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.4.0', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
 
 
 </html>
