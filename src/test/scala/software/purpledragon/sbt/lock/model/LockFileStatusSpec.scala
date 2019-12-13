@@ -165,7 +165,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       .withDependencyChanges(
         Nil,
         Nil,
-        Seq(testChangedDependency(newVersion = "1.0", newConfigurations = Set("compile"))))
+        Seq(testChangedDependency(newVersion = "1.0", newConfigurations = SortedSet("compile"))))
       .toLongReport shouldBe expected
   }
 
@@ -176,7 +176,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
         |    com.example:artifact:[1.0]->[2.0] (compile,test)->(compile)""".stripMargin
 
     LockFileMatches
-      .withDependencyChanges(Nil, Nil, Seq(testChangedDependency(newConfigurations = Set("compile"))))
+      .withDependencyChanges(Nil, Nil, Seq(testChangedDependency(newConfigurations = SortedSet("compile"))))
       .toLongReport shouldBe expected
   }
 
@@ -206,14 +206,14 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
           testChangedDependency(
             org = "org.example",
             name = "version",
-            oldConfigurations = Set("compile"),
-            newConfigurations = Set("compile")),
+            oldConfigurations = SortedSet("compile"),
+            newConfigurations = SortedSet("compile")),
           testChangedDependency(
             org = "org.example",
             name = "configs",
             newVersion = "1.0",
-            newConfigurations = Set("compile")),
-          testChangedDependency(org = "org.example", name = "both", oldConfigurations = Set("compile"))
+            newConfigurations = SortedSet("compile")),
+          testChangedDependency(org = "org.example", name = "both", oldConfigurations = SortedSet("compile"))
         )
       )
       .toLongReport
@@ -226,7 +226,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       name: String = "artifact",
       version: String = "1.0",
       configs: SortedSet[String] = SortedSet("compile", "test")): ResolvedDependency = {
-    ResolvedDependency(org, name, version, Nil, configs)
+    ResolvedDependency(org, name, version, SortedSet.empty, configs)
   }
 
   private def testChangedDependency(
@@ -234,9 +234,17 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       name: String = "artifact",
       oldVersion: String = "1.0",
       newVersion: String = "2.0",
-      oldConfigurations: Set[String] = Set("compile", "test"),
-      newConfigurations: Set[String] = Set("compile", "test")): ChangedDependency = {
+      oldConfigurations: SortedSet[String] = SortedSet("compile", "test"),
+      newConfigurations: SortedSet[String] = SortedSet("compile", "test")): ChangedDependency = {
 
-    ChangedDependency(org, name, oldVersion, newVersion, Nil, Nil, oldConfigurations, newConfigurations)
+    ChangedDependency(
+      org,
+      name,
+      oldVersion,
+      newVersion,
+      SortedSet.empty,
+      SortedSet.empty,
+      oldConfigurations,
+      newConfigurations)
   }
 }

@@ -16,15 +16,17 @@
 
 package software.purpledragon.sbt.lock.model
 
+import scala.collection.SortedSet
+
 final case class ChangedDependency(
     org: String,
     name: String,
     oldVersion: String,
     newVersion: String,
-    oldArtifacts: Seq[ResolvedArtifact],
-    newArtifacts: Seq[ResolvedArtifact],
-    oldConfigurations: Set[String],
-    newConfigurations: Set[String]) {
+    oldArtifacts: SortedSet[ResolvedArtifact],
+    newArtifacts: SortedSet[ResolvedArtifact],
+    oldConfigurations: SortedSet[String],
+    newConfigurations: SortedSet[String]) {
 
   def versionChanged: Boolean = oldVersion != newVersion
   def configurationsChanged: Boolean = oldConfigurations != newConfigurations

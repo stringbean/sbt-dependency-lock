@@ -80,7 +80,7 @@ object DependencyUtils {
       module.module.organization,
       module.module.name,
       module.module.revision,
-      artifacts,
+      artifacts.to[SortedSet],
       SortedSet.empty)
   }
 

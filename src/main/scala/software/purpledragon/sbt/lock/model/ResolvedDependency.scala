@@ -23,7 +23,7 @@ final case class ResolvedDependency(
     org: String,
     name: String,
     version: String,
-    artifacts: Seq[ResolvedArtifact],
+    artifacts: SortedSet[ResolvedArtifact],
     configurations: SortedSet[String])
     extends Ordered[ResolvedDependency] {
 
