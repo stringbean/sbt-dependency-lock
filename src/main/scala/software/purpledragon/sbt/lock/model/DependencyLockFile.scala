@@ -82,8 +82,8 @@ final case class DependencyLockFile(
             otherDep.version,
             ourDep.artifacts,
             otherDep.artifacts,
-            ourDep.configurations,
-            otherDep.configurations)
+            ourDep.configurations.toSet,
+            otherDep.configurations.toSet)
         } else {
           changes
         }

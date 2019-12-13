@@ -19,6 +19,8 @@ package software.purpledragon.sbt.lock.model
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.collection.SortedSet
+
 class LockFileStatusSpec extends AnyFlatSpec with Matchers {
   "LockFileMatches.toShortReport" should "output correct message" in {
     LockFileMatches.toShortReport shouldBe "Dependency lock check passed"
@@ -197,9 +199,9 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       .withConfigurationsChanged(Seq("test1"), Seq("test2", "test3"))
       .withDependencyChanges(
         Seq(
-          testDependency(name = "artifact1", configs = Set("compile")),
-          testDependency(name = "artifact2", version = "1.2", configs = Set("test"))),
-        Seq(testDependency(name = "artifact3", version = "3.1.1", configs = Set("runtime"))),
+          testDependency(name = "artifact1", configs = SortedSet("compile")),
+          testDependency(name = "artifact2", version = "1.2", configs = SortedSet("test"))),
+        Seq(testDependency(name = "artifact3", version = "3.1.1", configs = SortedSet("runtime"))),
         Seq(
           testChangedDependency(
             org = "org.example",
@@ -223,7 +225,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       org: String = "com.example",
       name: String = "artifact",
       version: String = "1.0",
-      configs: Set[String] = Set("compile", "test")): ResolvedDependency = {
+      configs: SortedSet[String] = SortedSet("compile", "test")): ResolvedDependency = {
     ResolvedDependency(org, name, version, Nil, configs)
   }
 

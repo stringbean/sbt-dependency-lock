@@ -16,6 +16,7 @@
 
 package software.purpledragon.sbt.lock.model
 
+import scala.collection.SortedSet
 import scala.math.Ordered.orderingToOrdered
 
 final case class ResolvedDependency(
@@ -23,7 +24,7 @@ final case class ResolvedDependency(
     name: String,
     version: String,
     artifacts: Seq[ResolvedArtifact],
-    configurations: Set[String])
+    configurations: SortedSet[String])
     extends Ordered[ResolvedDependency] {
 
   override def compare(that: ResolvedDependency): Int = {
