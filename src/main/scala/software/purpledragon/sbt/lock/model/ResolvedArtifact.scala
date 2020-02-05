@@ -16,10 +16,34 @@
 
 package software.purpledragon.sbt.lock.model
 
+import java.io.File
+
+import sbt.{File, Hash}
+import sbt.librarymanagement.Artifact
+import software.purpledragon.sbt.lock.DependencyUtils.hashFile
+
+import scala.collection.mutable
 import scala.math.Ordered.orderingToOrdered
 
 final case class ResolvedArtifact(name: String, hash: String) extends Ordered[ResolvedArtifact] {
   override def compare(that: ResolvedArtifact): Int = {
     (name, hash) compare (that.name, that.hash)
   }
+}
+
+object ResolvedArtifact {
+  def apply(art: (Artifact, File), checksumCache: mutable.Map[File, String]): ResolvedArtifact = {
+    val (artifact, file) = art
+    val hash = checksumCache.getOrElseUpdate(file, hashFile(file))
+
+    val classifier = artifact.classifier.map(c => s"-$c").getOrElse("")
+    val qualifier = artifact.`type` match {
+      case "jar" | "bundle" => ""
+      case q => s"-$q"
+    }
+
+    ResolvedArtifact(s"${artifact.name}$classifier$qualifier.${artifact.extension}", hash)
+  }
+
+  private def hashFile(file: File): String = s"sha1:${Hash.toHex(Hash(file))}"
 }
