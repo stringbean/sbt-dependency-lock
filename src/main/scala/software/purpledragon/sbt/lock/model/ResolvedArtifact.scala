@@ -18,9 +18,8 @@ package software.purpledragon.sbt.lock.model
 
 import java.io.File
 
-import sbt.{File, Hash}
+import sbt.Hash
 import sbt.librarymanagement.Artifact
-import software.purpledragon.sbt.lock.DependencyUtils.hashFile
 
 import scala.collection.mutable
 import scala.math.Ordered.orderingToOrdered
