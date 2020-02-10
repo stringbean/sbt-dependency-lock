@@ -17,6 +17,7 @@
 package software.purpledragon.sbt.lock.model
 
 import software.purpledragon.sbt.lock.util.MessageUtil
+import software.purpledragon.text.TableFormatter
 
 import scala.collection.mutable
 
@@ -43,7 +44,8 @@ case object LockFileMatches extends LockFileStatus {
     LockFileDiffers(Nil, Nil, added, removed, changed)
   }
 
-  override val toShortReport: String = MessageUtil.formatMessage("lock.status.success")
+  override val toShortReport: String =
+    MessageUtil.formatMessage("lock.status.success")
   override val toLongReport: String = toShortReport
 }
 
@@ -108,16 +110,14 @@ final case class LockFileDiffers(
     }
 
     def dumpDependencies(dependencies: Seq[ResolvedDependency]): String = {
-      dependencies
-        .map({ dep =>
-          MessageUtil.formatMessage(
-            "lock.status.full.dependency",
-            dep.org,
-            dep.name,
-            dep.version,
-            dep.configurations.toSeq.sorted.mkString(","))
-        })
-        .mkString("\n")
+      val table =
+        new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
+
+      dependencies foreach { dep =>
+        table.addRow(s"${dep.org}:${dep.name}", s"(${dep.configurations.mkString(",")})", dep.version)
+      }
+
+      table.toString()
     }
 
     if (addedDependencies.nonEmpty) {
@@ -134,29 +134,30 @@ final case class LockFileDiffers(
         dumpDependencies(removedDependencies))
     }
 
-    if (changedDependencies.nonEmpty) {
-      val changeDetails = changedDependencies map { change =>
-        val key = (change.versionChanged, change.configurationsChanged) match {
-          case (true, true) => "lock.status.full.dependency.changed.all"
-          case (true, false) => "lock.status.full.dependency.changed.version"
-          case (false, true) => "lock.status.full.dependency.changed.configs"
-          case _ => "error"
-        }
+    def dumpChanges(changes: Seq[ChangedDependency]): String = {
+      val table =
+        new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
 
-        MessageUtil.formatMessage(
-          key,
-          change.org,
-          change.name,
+      changes foreach { change =>
+        table.addRow(
+          s"${change.org}:${change.name}",
+          s"(${change.oldConfigurations.mkString(",")})",
+          if (change.configurationsChanged)
+            s"-> (${change.newConfigurations.mkString(",")})"
+          else "",
           change.oldVersion,
-          change.newVersion,
-          change.oldConfigurations.mkString(","),
-          change.newConfigurations.mkString(","))
+          if (change.versionChanged) s"-> ${change.newVersion}" else ""
+        )
       }
 
+      table.toString()
+    }
+
+    if (changedDependencies.nonEmpty) {
       errors += MessageUtil.formatPlural(
         "lock.status.full.dependencies.changed",
         changedDependencies.size,
-        changeDetails.mkString("\n"))
+        dumpChanges(changedDependencies))
     }
 
     MessageUtil.formatMessage("lock.status.failed.long", errors.mkString("\n"))
