@@ -135,8 +135,7 @@ final case class LockFileDiffers(
     }
 
     def dumpChanges(changes: Seq[ChangedDependency]): String = {
-      val table =
-        new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
+      val table = new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
 
       changes foreach { change =>
         table.addRow(
@@ -153,11 +152,18 @@ final case class LockFileDiffers(
       table.toString()
     }
 
-    if (changedDependencies.nonEmpty) {
+    val (depChanged, artChanged) =
+      changedDependencies.partition(change => change.configurationsChanged || change.versionChanged)
+
+    if (depChanged.nonEmpty) {
       errors += MessageUtil.formatPlural(
         "lock.status.full.dependencies.changed",
-        changedDependencies.size,
-        dumpChanges(changedDependencies))
+        depChanged.size,
+        dumpChanges(depChanged))
+    }
+
+    if (artChanged.nonEmpty) {
+      errors += MessageUtil.formatPlural("lock.status.full.artifacts.changed", artChanged.size)
     }
 
     MessageUtil.formatMessage("lock.status.failed.long", errors.mkString("\n"))

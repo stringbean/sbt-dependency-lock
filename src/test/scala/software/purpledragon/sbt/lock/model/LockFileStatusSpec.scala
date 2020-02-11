@@ -180,6 +180,35 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       .toLongReport shouldBe expected
   }
 
+  it should "render 2 dependency artifacts changed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  2 dependency artifacts changed""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(
+        Nil,
+        Nil,
+        Seq(
+          testChangedDependencyArtifacts(
+            "dependency-1",
+            "1.1",
+            oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
+            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890"))
+          ),
+          testChangedDependencyArtifacts(
+            "dependency-2",
+            "1.1.2",
+            oldArtifacts = Seq(
+              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc")
+            )
+          )
+        )
+      )
+      .toLongReport shouldBe expected
+  }
+
   it should "render lots of changes" in {
     val expected =
       """Dependency lock check failed:
@@ -246,5 +275,24 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       SortedSet.empty,
       oldConfigurations,
       newConfigurations)
+  }
+
+  private def testChangedDependencyArtifacts(
+      name: String,
+      version: String,
+      org: String = "com.example",
+      oldArtifacts: Seq[ResolvedArtifact] = Nil,
+      newArtifacts: Seq[ResolvedArtifact] = Nil): ChangedDependency = {
+
+    ChangedDependency(
+      org,
+      name,
+      version,
+      version,
+      oldArtifacts.to[SortedSet],
+      newArtifacts.to[SortedSet],
+      SortedSet("compile"),
+      SortedSet("compile")
+    )
   }
 }
