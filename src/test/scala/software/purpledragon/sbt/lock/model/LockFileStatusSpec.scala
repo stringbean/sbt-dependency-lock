@@ -19,6 +19,8 @@ package software.purpledragon.sbt.lock.model
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.collection.SortedSet
+
 class LockFileStatusSpec extends AnyFlatSpec with Matchers {
   "LockFileMatches.toShortReport" should "output correct message" in {
     LockFileMatches.toShortReport shouldBe "Dependency lock check passed"
@@ -86,6 +88,35 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     LockFileMatches.withDependencyChanges(Nil, Nil, Seq(testChangedDependency())).toShortReport shouldBe expected
   }
 
+  it should "render 2 dependency artifacts changed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  2 dependency artifacts changed""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(
+        Nil,
+        Nil,
+        Seq(
+          testChangedDependencyArtifacts(
+            "dependency-1",
+            "1.1",
+            oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
+            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890"))
+          ),
+          testChangedDependencyArtifacts(
+            "dependency-2",
+            "1.1.2",
+            oldArtifacts = Seq(
+              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc")
+            )
+          )
+        )
+      )
+      .toShortReport shouldBe expected
+  }
+
   it should "render configs and dependencies changed" in {
     val expected =
       """Dependency lock check failed:
@@ -127,7 +158,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     val expected =
       """Dependency lock check failed:
         |  1 dependency added:
-        |    com.example:artifact:1.0 (compile,test)""".stripMargin
+        |    com.example:artifact  (compile,test)  1.0""".stripMargin
 
     LockFileMatches.withDependencyChanges(Seq(testDependency()), Nil, Nil).toLongReport shouldBe expected
   }
@@ -136,8 +167,8 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     val expected =
       """Dependency lock check failed:
         |  2 dependencies removed:
-        |    com.example:artifact:1.0 (compile,test)
-        |    com.example:artifact-2:1.0 (compile,test)""".stripMargin
+        |    com.example:artifact    (compile,test)  1.0
+        |    com.example:artifact-2  (compile,test)  1.0""".stripMargin
 
     LockFileMatches
       .withDependencyChanges(Nil, Seq(testDependency(), testDependency(name = "artifact-2")), Nil)
@@ -148,7 +179,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     val expected =
       """Dependency lock check failed:
         |  1 dependency changed:
-        |    com.example:artifact:[1.0]->[2.0] (compile,test)""".stripMargin
+        |    com.example:artifact  (compile,test)    1.0  -> 2.0""".stripMargin
 
     LockFileMatches.withDependencyChanges(Nil, Nil, Seq(testChangedDependency())).toLongReport shouldBe expected
   }
@@ -157,13 +188,13 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     val expected =
       """Dependency lock check failed:
         |  1 dependency changed:
-        |    com.example:artifact:1.0 (compile,test)->(compile)""".stripMargin
+        |    com.example:artifact  (compile,test)  -> (compile)  1.0""".stripMargin
 
     LockFileMatches
       .withDependencyChanges(
         Nil,
         Nil,
-        Seq(testChangedDependency(newVersion = "1.0", newConfigurations = Set("compile"))))
+        Seq(testChangedDependency(newVersion = "1.0", newConfigurations = SortedSet("compile"))))
       .toLongReport shouldBe expected
   }
 
@@ -171,10 +202,39 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
     val expected =
       """Dependency lock check failed:
         |  1 dependency changed:
-        |    com.example:artifact:[1.0]->[2.0] (compile,test)->(compile)""".stripMargin
+        |    com.example:artifact  (compile,test)  -> (compile)  1.0  -> 2.0""".stripMargin
 
     LockFileMatches
-      .withDependencyChanges(Nil, Nil, Seq(testChangedDependency(newConfigurations = Set("compile"))))
+      .withDependencyChanges(Nil, Nil, Seq(testChangedDependency(newConfigurations = SortedSet("compile"))))
+      .toLongReport shouldBe expected
+  }
+
+  it should "render 2 dependency artifacts changed" in {
+    val expected =
+      """Dependency lock check failed:
+        |  2 dependency artifacts changed""".stripMargin
+
+    LockFileMatches
+      .withDependencyChanges(
+        Nil,
+        Nil,
+        Seq(
+          testChangedDependencyArtifacts(
+            "dependency-1",
+            "1.1",
+            oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
+            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890"))
+          ),
+          testChangedDependencyArtifacts(
+            "dependency-2",
+            "1.1.2",
+            oldArtifacts = Seq(
+              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc")
+            )
+          )
+        )
+      )
       .toLongReport shouldBe expected
   }
 
@@ -184,34 +244,34 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
         |  1 config added: test1
         |  2 configs removed: test2,test3
         |  2 dependencies added:
-        |    com.example:artifact1:1.0 (compile)
-        |    com.example:artifact2:1.2 (test)
+        |    com.example:artifact1  (compile)  1.0
+        |    com.example:artifact2  (test)     1.2
         |  1 dependency removed:
-        |    com.example:artifact3:3.1.1 (runtime)
+        |    com.example:artifact3  (runtime)  3.1.1
         |  3 dependencies changed:
-        |    org.example:version:[1.0]->[2.0] (compile)
-        |    org.example:configs:1.0 (compile,test)->(compile)
-        |    org.example:both:[1.0]->[2.0] (compile)->(compile,test)""".stripMargin
+        |    org.example:version  (compile)                          1.0  -> 2.0
+        |    org.example:configs  (compile,test)  -> (compile)       1.0
+        |    org.example:both     (compile)       -> (compile,test)  1.0  -> 2.0""".stripMargin
 
     val actual = LockFileMatches
       .withConfigurationsChanged(Seq("test1"), Seq("test2", "test3"))
       .withDependencyChanges(
         Seq(
-          testDependency(name = "artifact1", configs = Set("compile")),
-          testDependency(name = "artifact2", version = "1.2", configs = Set("test"))),
-        Seq(testDependency(name = "artifact3", version = "3.1.1", configs = Set("runtime"))),
+          testDependency(name = "artifact1", configs = SortedSet("compile")),
+          testDependency(name = "artifact2", version = "1.2", configs = SortedSet("test"))),
+        Seq(testDependency(name = "artifact3", version = "3.1.1", configs = SortedSet("runtime"))),
         Seq(
           testChangedDependency(
             org = "org.example",
             name = "version",
-            oldConfigurations = Set("compile"),
-            newConfigurations = Set("compile")),
+            oldConfigurations = SortedSet("compile"),
+            newConfigurations = SortedSet("compile")),
           testChangedDependency(
             org = "org.example",
             name = "configs",
             newVersion = "1.0",
-            newConfigurations = Set("compile")),
-          testChangedDependency(org = "org.example", name = "both", oldConfigurations = Set("compile"))
+            newConfigurations = SortedSet("compile")),
+          testChangedDependency(org = "org.example", name = "both", oldConfigurations = SortedSet("compile"))
         )
       )
       .toLongReport
@@ -223,8 +283,8 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       org: String = "com.example",
       name: String = "artifact",
       version: String = "1.0",
-      configs: Set[String] = Set("compile", "test")): ResolvedDependency = {
-    ResolvedDependency(org, name, version, Nil, configs)
+      configs: SortedSet[String] = SortedSet("compile", "test")): ResolvedDependency = {
+    ResolvedDependency(org, name, version, SortedSet.empty, configs)
   }
 
   private def testChangedDependency(
@@ -232,9 +292,36 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       name: String = "artifact",
       oldVersion: String = "1.0",
       newVersion: String = "2.0",
-      oldConfigurations: Set[String] = Set("compile", "test"),
-      newConfigurations: Set[String] = Set("compile", "test")): ChangedDependency = {
+      oldConfigurations: SortedSet[String] = SortedSet("compile", "test"),
+      newConfigurations: SortedSet[String] = SortedSet("compile", "test")): ChangedDependency = {
 
-    ChangedDependency(org, name, oldVersion, newVersion, Nil, Nil, oldConfigurations, newConfigurations)
+    ChangedDependency(
+      org,
+      name,
+      oldVersion,
+      newVersion,
+      SortedSet.empty,
+      SortedSet.empty,
+      oldConfigurations,
+      newConfigurations)
+  }
+
+  private def testChangedDependencyArtifacts(
+      name: String,
+      version: String,
+      org: String = "com.example",
+      oldArtifacts: Seq[ResolvedArtifact] = Nil,
+      newArtifacts: Seq[ResolvedArtifact] = Nil): ChangedDependency = {
+
+    ChangedDependency(
+      org,
+      name,
+      version,
+      version,
+      oldArtifacts.to[SortedSet],
+      newArtifacts.to[SortedSet],
+      SortedSet("compile"),
+      SortedSet("compile")
+    )
   }
 }

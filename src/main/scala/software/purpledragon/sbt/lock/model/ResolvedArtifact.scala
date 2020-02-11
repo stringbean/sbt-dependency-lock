@@ -16,4 +16,10 @@
 
 package software.purpledragon.sbt.lock.model
 
-final case class ResolvedArtifact(name: String, hash: String)
+import scala.math.Ordered.orderingToOrdered
+
+final case class ResolvedArtifact(name: String, hash: String) extends Ordered[ResolvedArtifact] {
+  override def compare(that: ResolvedArtifact): Int = {
+    (name, hash) compare (that.name, that.hash)
+  }
+}

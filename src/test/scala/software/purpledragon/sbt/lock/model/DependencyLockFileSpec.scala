@@ -21,6 +21,8 @@ import java.time.Instant
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.collection.SortedSet
+
 class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   private val EmptyLockFile = DependencyLockFile(1, Instant.now(), Nil, Nil)
   private val TestLockFile = DependencyLockFile(
@@ -32,9 +34,9 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
         "com.example",
         "package-1",
         "1.0.0",
-        Seq(ResolvedArtifact("package-1.jar", "hash-1")),
-        Set("test-1")),
-      ResolvedDependency("com.example", "package-2", "1.2.0", Nil, Set("test-2"))
+        SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
+        SortedSet("test-1")),
+      ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
     )
   )
 
@@ -80,8 +82,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
       "com.example",
       "package-3",
       "3.0",
-      Seq(ResolvedArtifact("package-3.jar", "hash-3")),
-      Set("test-1"))
+      SortedSet(ResolvedArtifact("package-3.jar", "hash-3")),
+      SortedSet("test-1"))
 
     val left = TestLockFile
     val right = left.copy(dependencies = left.dependencies :+ newDependency)
@@ -103,8 +105,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
         "com.example",
         "package-1",
         "2.0.0",
-        Seq(ResolvedArtifact("package-1.jar", "hash-1a")),
-        Set("test-1", "test-2"))
+        SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
+        SortedSet("test-1", "test-2"))
     )
 
     left.findChanges(right) shouldBe LockFileDiffers(
@@ -118,10 +120,10 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
           "package-1",
           "1.0.0",
           "2.0.0",
-          Seq(ResolvedArtifact("package-1.jar", "hash-1")),
-          Seq(ResolvedArtifact("package-1.jar", "hash-1a")),
-          Set("test-1"),
-          Set("test-1", "test-2")
+          SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
+          SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
+          SortedSet("test-1"),
+          SortedSet("test-1", "test-2")
         ))
     )
   }

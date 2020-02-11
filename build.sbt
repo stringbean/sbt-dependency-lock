@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
 ).map(_ % circeVersion)
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.1.0" % Test
+  "software.purpledragon" %% "text-utils" % "1.2.0",
+  "org.scalatest"         %% "scalatest"  % "3.1.0" % Test
 )
 
 organizationName := "Michael Stringer"
