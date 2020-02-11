@@ -80,13 +80,19 @@ final case class LockFileDiffers(
       )
     }
 
-    if (addedDependencies.nonEmpty || removedDependencies.nonEmpty || changedDependencies.nonEmpty) {
+    val (otherChanged, artifactChanged) = separateArtifactChanges(changedDependencies)
+
+    if (addedDependencies.nonEmpty || removedDependencies.nonEmpty || otherChanged.nonEmpty) {
       errors += MessageUtil.formatMessage(
         "lock.status.dependencies.info",
         MessageUtil.formatPlural("lock.status.dependencies", addedDependencies.size),
         MessageUtil.formatPlural("lock.status.dependencies", removedDependencies.size),
         MessageUtil.formatPlural("lock.status.dependencies", changedDependencies.size)
       )
+    }
+
+    if (artifactChanged.nonEmpty) {
+      errors += MessageUtil.formatPlural("lock.status.artifacts.changed", artifactChanged.size)
     }
 
     MessageUtil.formatMessage("lock.status.failed.short", errors.mkString("\n"))
@@ -152,20 +158,24 @@ final case class LockFileDiffers(
       table.toString()
     }
 
-    val (depChanged, artChanged) =
-      changedDependencies.partition(change => change.configurationsChanged || change.versionChanged)
+    val (otherChanged, artifactChanged) = separateArtifactChanges(changedDependencies)
 
-    if (depChanged.nonEmpty) {
+    if (otherChanged.nonEmpty) {
       errors += MessageUtil.formatPlural(
         "lock.status.full.dependencies.changed",
-        depChanged.size,
-        dumpChanges(depChanged))
+        otherChanged.size,
+        dumpChanges(otherChanged))
     }
 
-    if (artChanged.nonEmpty) {
-      errors += MessageUtil.formatPlural("lock.status.full.artifacts.changed", artChanged.size)
+    if (artifactChanged.nonEmpty) {
+      errors += MessageUtil.formatPlural("lock.status.full.artifacts.changed", artifactChanged.size)
     }
 
     MessageUtil.formatMessage("lock.status.failed.long", errors.mkString("\n"))
+  }
+
+  private def separateArtifactChanges(
+      changedDependencies: Seq[ChangedDependency]): (Seq[ChangedDependency], Seq[ChangedDependency]) = {
+    changedDependencies.partition(change => change.configurationsChanged || change.versionChanged)
   }
 }
