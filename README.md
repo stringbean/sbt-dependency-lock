@@ -3,6 +3,7 @@
 [![Codacy grade](https://img.shields.io/codacy/grade/d45ca406c90c45c88a3a317563bc3302?label=codacy)](https://codacy.com/app/stringbean/sbt-dependency-lock)
 [![Known Vulnerabilities](https://snyk.io/test/github/stringbean/sbt-dependency-lock/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/stringbean/sbt-dependency-lock?targetFile=build.sbt)
 ![Bintray](https://img.shields.io/bintray/v/stringbean/sbt-plugins/sbt-dependency-lock?label=sbt%201.x) 
+[![Join the chat at https://gitter.im/sbt-dependency-lock/community](https://badges.gitter.im/sbt-dependency-lock/community.svg)](https://gitter.im/sbt-dependency-lock/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 An sbt plugin to create a dependency lockfile similar to `package-lock.json` for npm or `Gemfile.lock` for RubyGems.
 
