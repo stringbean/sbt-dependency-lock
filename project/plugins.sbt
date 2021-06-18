@@ -5,7 +5,7 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.12")
 
 // code style
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.2.0")
-addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.9")
+addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.1.0")
 
 // documentation
 addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.4.0")

@@ -57,8 +57,8 @@ final case class LockFileDiffers(
     changedDependencies: Seq[ChangedDependency])
     extends LockFileStatus {
 
-  override def withConfigurationsChanged(addedConfigs: Seq[String], removedConfigs: Seq[String]): LockFileStatus = {
-    copy(addedConfigs = addedConfigs, removedConfigs = removedConfigs)
+  override def withConfigurationsChanged(added: Seq[String], removed: Seq[String]): LockFileStatus = {
+    copy(addedConfigs = added, removedConfigs = removed)
   }
 
   override def withDependencyChanges(
@@ -175,7 +175,7 @@ final case class LockFileDiffers(
   }
 
   private def separateArtifactChanges(
-      changedDependencies: Seq[ChangedDependency]): (Seq[ChangedDependency], Seq[ChangedDependency]) = {
-    changedDependencies.partition(change => change.configurationsChanged || change.versionChanged)
+      changes: Seq[ChangedDependency]): (Seq[ChangedDependency], Seq[ChangedDependency]) = {
+    changes.partition(change => change.configurationsChanged || change.versionChanged)
   }
 }
