@@ -64,16 +64,15 @@ object DependencyUtils {
       module: ModuleReport,
       checksumCache: mutable.Map[File, String]): ResolvedDependency = {
 
-    val artifacts: immutable.Seq[ResolvedArtifact] = module.artifacts map {
-      case (artifact, file) =>
-        val hash = checksumCache.getOrElseUpdate(file, hashFile(file))
+    val artifacts: immutable.Seq[ResolvedArtifact] = module.artifacts map { case (artifact, file) =>
+      val hash = checksumCache.getOrElseUpdate(file, hashFile(file))
 
-        val qualifier = artifact.`type` match {
-          case "jar" | "bundle" => ""
-          case q => s"-$q"
-        }
+      val qualifier = artifact.`type` match {
+        case "jar" | "bundle" => ""
+        case q => s"-$q"
+      }
 
-        ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", hash)
+      ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", hash)
     }
 
     ResolvedDependency(
