@@ -108,6 +108,11 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h2><a href="#rationale" name="rationale" class="anchor"><span class="anchor-link"></span></a>Rationale</h2>
 <p>Managing dependencies on a large project can be a difficult problem especially when requested dependencies pull in large numbers of transitive dependencies. This can lead to scenarios where incrementing the version of a single dependency can cause a snowball effect of dozens of updated transitive dependencies.</p>
 <p>This plugin generates a lockfile based on the current project dependencies that can be checked into source control and can be checked to see what dependencies have changed. </p>
+<h2><a href="#alternatives" name="alternatives" class="anchor"><span class="anchor-link"></span></a>Alternatives</h2>
+<h3><a href="#sbt-lock" name="sbt-lock" class="anchor"><span class="anchor-link"></span></a>sbt-lock</h3>
+<p><a href="https://github.com/tkawachi/sbt-lock">sbt-lock</a> is an sbt plugin that generates lockfiles to control the resolved dependency versions. When enabled it will generate a <code>lock.sbt</code> file that sets <code>Compile / dependencyOverrides</code> to the currently resolved versions, any further changes to the dependencies will be overridden until the lockfile is regenerated.</p>
+<p>While <code>sbt-lock</code> is good at fixing the versions that sbt will use for future builds it is weak at showing what dependencies have changed. Until the lockfile is &lsquo;unlocked&rsquo; any dependency changes you make to <code>build.sbt</code> will be ignored; this forces you to &lsquo;unlock&rsquo;, update the dependencies, &lsquo;lock&rsquo; again and then diff the lockfile to see what has changed.</p>
+<p>The approach taken by <code>sbt-dependency-lock</code> is to allow changes to be made to the dependencies, warn you that the dependencies have changed and generate a report showing the changes. Keeping the lockfile up to date can be enforced using a lockfile check in a CI pipeline.</p>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/v1.1.1/src/main/paradox/index.md">here</a>.
 </div>
@@ -125,6 +130,7 @@ The source code for this page can be found <a href="https://github.com/stringbea
   <li><a href="index.html#sbt-dependency-lock" class="header">sbt-dependency-lock</a>
   <ul>
     <li><a href="index.html#rationale" class="header">Rationale</a></li>
+    <li><a href="index.html#alternatives" class="header">Alternatives</a></li>
   </ul></li>
 </ul>
 </div>
