@@ -1,0 +1,43 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [8, 11]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: coursier/cache-action@v6
+      - uses: actions/setup-java@v2
+        with:
+          java-version: ${{matrix.java}}
+          distribution: adopt
+      - name: Run tests
+        uses: lokkju/github-action-sbt@master
+        with:
+          commands: test scripted headerCheck scapegoat
+
+  scalafmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # only fetch the head commits of our branch & mainline
+      # loosely based on https://github.com/actions/checkout/issues/329#issuecomment-717076567
+      - name: Checkout branch history
+        run: |
+          git remote set-branches origin "${{github.base_ref}}" "${{github.head_ref}}"
+          git fetch --depth 1
+          git checkout "${{github.head_ref}}"
+
+      - name: Run scalafmt
+        uses: stringbean/scalafmt-action@v2.0.0-beta
+        with:
+          compare-branch: master

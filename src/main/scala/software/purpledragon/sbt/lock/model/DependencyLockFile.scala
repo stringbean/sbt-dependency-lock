@@ -69,8 +69,8 @@ final case class DependencyLockFile(
     val added: Set[DependencyRef] = otherDeps.keySet -- ourDeps.keySet
     val removed: Set[DependencyRef] = ourDeps.keySet -- otherDeps.keySet
 
-    val changed = ourDeps.keySet.intersect(otherDeps.keySet).foldLeft(Seq.empty[ChangedDependency]) {
-      (changes, depref) =>
+    val changed =
+      ourDeps.keySet.intersect(otherDeps.keySet).foldLeft(Seq.empty[ChangedDependency]) { (changes, depref) =>
         val ourDep = ourDeps(depref)
         val otherDep = otherDeps(depref)
 
@@ -87,7 +87,7 @@ final case class DependencyLockFile(
         } else {
           changes
         }
-    }
+      }
 
     if (added.nonEmpty || removed.nonEmpty || changed.nonEmpty) {
       acc.withDependencyChanges(

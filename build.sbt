@@ -9,7 +9,7 @@ enablePlugins(
 // target sbt 1.2.8 to allow 1.0+ compatibility
 pluginCrossBuild / sbtVersion := "1.2.8"
 
-val circeVersion = "0.12.3"
+val circeVersion = "0.14.1"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
@@ -18,8 +18,8 @@ libraryDependencies ++= Seq(
 ).map(_ % circeVersion)
 
 libraryDependencies ++= Seq(
-  "software.purpledragon" %% "text-utils" % "1.2.0",
-  "org.scalatest"         %% "scalatest"  % "3.1.0" % Test
+  "software.purpledragon" %% "text-utils" % "1.3.0",
+  "org.scalatest"         %% "scalatest"  % "3.2.9" % Test
 )
 
 organizationName := "Michael Stringer"
@@ -30,7 +30,7 @@ scriptedLaunchOpts := { scriptedLaunchOpts.value ++
   Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 }
 
-scapegoatVersion in ThisBuild := "1.3.11"
+ThisBuild / scapegoatVersion  := "1.4.9"
 
 developers := List(
   Developer("stringbean", "Michael Stringer", "@the_stringbean", url("https://github.com/stringbean"))
@@ -42,8 +42,6 @@ scmInfo := Some(
     url("https://github.com/stringbean/sbt-dependency-lock"),
     "https://github.com/stringbean/sbt-dependency-lock.git"))
 git.remoteRepo := "git@github.com:stringbean/sbt-dependency-lock.git"
-
-bintrayPackageLabels := Seq("sbt", "sbt-plugin", "lockfile")
 
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
@@ -64,3 +62,5 @@ releaseProcess := Seq[ReleaseStep](
   commitNextVersion,
   pushChanges
 )
+
+previewLaunchBrowser := false
