@@ -42,6 +42,7 @@ scmInfo := Some(
     url("https://github.com/stringbean/sbt-dependency-lock"),
     "https://github.com/stringbean/sbt-dependency-lock.git"))
 git.remoteRepo := "git@github.com:stringbean/sbt-dependency-lock.git"
+publishTo := sonatypePublishToBundle.value
 
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
