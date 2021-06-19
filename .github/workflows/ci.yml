@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: ${{matrix.java}}
           distribution: adopt
-      - name: Runt tests
+      - name: Run tests
         uses: lokkju/github-action-sbt@master
         with:
           commands: test scripted headerCheck scapegoat
