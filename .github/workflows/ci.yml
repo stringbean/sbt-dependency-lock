@@ -24,20 +24,3 @@ jobs:
         uses: lokkju/github-action-sbt@master
         with:
           commands: test scripted headerCheck scapegoat
-
-  scalafmt:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      # only fetch the head commits of our branch & mainline
-      # loosely based on https://github.com/actions/checkout/issues/329#issuecomment-717076567
-      - name: Checkout branch history
-        run: |
-          git remote set-branches origin "${{github.base_ref}}" "${{github.head_ref}}"
-          git fetch --depth 1
-          git checkout "${{github.head_ref}}"
-
-      - name: Run scalafmt
-        uses: stringbean/scalafmt-action@v2.0.0-beta
-        with:
-          compare-branch: master
