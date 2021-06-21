@@ -1,11 +1,5 @@
 # Version 1
 
-@@@warning
-This version of the lockfile has not been finalised and may change as features are added or bugs resolved.
-
-The format will be finalised in version 1.0.0.
-@@@
-
 * **Added in:** 0.1.0
 * **Removed in:** _N/A_
 
