@@ -49,10 +49,10 @@ A mismatch between the lockfile and current dependencies will generate an error 
 ```text
 [error] (dependencyLockCheck) Dependency lock check failed:
 [error]   3 dependencies changed:
-[error]     org.apache.commons:commons-lang3:3.9 (test)->(compile,test)
-[error]     org.scala-lang.modules:scala-xml_2.12:[1.2.0]->[1.1.0] (test)
-[error]     org.scalactic:scalactic_2.12:[3.0.8]->[3.0.7] (test)
-[error]     org.scalatest:scalatest_2.12:[3.0.8]->[3.0.7] (test)
+[error]     org.apache.commons:commons-lang3       (test)  -> (compile,test)  3.9 
+[error]     org.scala-lang.modules:scala-xml_2.12  (test)                     1.2.0  -> 1.1.0 
+[error]     org.scalactic:scalactic_2.12           (test)                     3.0.8  -> 3.0.7 
+[error]     org.scalatest:scalatest_2.12           (test)                     3.0.8  -> 3.0.7 
 ```
 
 The error report is broken down into a number of sections:
@@ -68,18 +68,18 @@ The error report is broken down into a number of sections:
 3. Dependencies added:
     ```text
     2 dependencies added:
-      com.example:artifact1:1.0 (compile)
-      com.example:artifact2:1.2 (test)
+      com.example:artifact1  (compile)  1.0
+      com.example:artifact2  (test)     1.2
     ```
 4. Dependencies removed:
     ```text
     1 dependency removed:
-      com.example:artifact3:3.1.1 (runtime)
+      com.example:artifact3  (runtime)  3.1.1
     ```
 5. Changed dependencies:
     ```text
     3 dependencies changed:
-      org.example:version:[1.0]->[2.0] (compile)
-      org.example:configs:1.0 (compile,test)->(compile)
-      org.example:both:[1.0]->[2.0] (compile)->(compile,test)
+      org.example:both     (compile)       -> (compile,test)  1.0  -> 2.0
+      org.example:configs  (compile,test)  -> (compile)       1.0
+      org.example:version  (compile)                          1.0  -> 2.0
     ```
