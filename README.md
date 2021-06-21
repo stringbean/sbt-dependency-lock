@@ -30,9 +30,10 @@ A mismatch between the lockfile and current dependencies will generate an error 
 ```text
 [error] (dependencyLockCheck) Dependency lock check failed:
 [error]   3 dependencies changed:
-[error]     org.scala-lang.modules:scala-xml_2.12:[1.2.0]->[1.1.0] (test)
-[error]     org.scalactic:scalactic_2.12:[3.0.8]->[3.0.7] (test)
-[error]     org.scalatest:scalatest_2.12:[3.0.8]->[3.0.7] (test)
+[error]     org.apache.commons:commons-lang3       (test)  -> (compile,test)  3.9 
+[error]     org.scala-lang.modules:scala-xml_2.12  (test)                     1.2.0  -> 1.1.0 
+[error]     org.scalactic:scalactic_2.12           (test)                     3.0.8  -> 3.0.7 
+[error]     org.scalatest:scalatest_2.12           (test)                     3.0.8  -> 3.0.7 
 ```
 
 See the [docs](https://stringbean.github.io/sbt-dependency-lock) for further information on how the plugin works.
