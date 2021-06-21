@@ -32,7 +32,7 @@
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-1.1.1
+1.1.2*
 </div>
 </div>
 <div class="nav-toc">
@@ -74,7 +74,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-1.1.1
+1.1.2*
 </div>
 </div>
 <div class="nav-toc">
@@ -112,7 +112,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h1><a href="#getting-started" name="getting-started" class="anchor"><span class="anchor-link"></span></a>Getting Started</h1>
 <h2><a href="#setup" name="setup" class="anchor"><span class="anchor-link"></span></a>Setup</h2>
 <p>Install the plugin by adding the following to <code>project/plugins.sbt</code>:</p>
-<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;software.purpledragon&quot; % &quot;sbt-dependency-lock&quot; % &quot;1.1.1&quot;)
+<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;software.purpledragon&quot; % &quot;sbt-dependency-lock&quot; % &quot;1.1.2-SNAPSHOT&quot;)
 </code></pre>
 <p>And then generate a lockfile with <code>sbt dependencyLockWrite</code>. This will resolve dependencies and output a lockfile containing all dependencies (including transitive ones) to <code>build.sbt.lock</code>.</p><div class="callout note "><div class="callout-title">Note</div>
 <p>The generated <code>build.sbt.lock</code> file should be checked into source control with the rest of the project source code.</p></div>
@@ -131,10 +131,10 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <p>A mismatch between the lockfile and current dependencies will generate an error report summarising the differences:</p>
 <pre class="prettyprint"><code class="nocode">[error] (dependencyLockCheck) Dependency lock check failed:
 [error]   3 dependencies changed:
-[error]     org.apache.commons:commons-lang3:3.9 (test)-&gt;(compile,test)
-[error]     org.scala-lang.modules:scala-xml_2.12:[1.2.0]-&gt;[1.1.0] (test)
-[error]     org.scalactic:scalactic_2.12:[3.0.8]-&gt;[3.0.7] (test)
-[error]     org.scalatest:scalatest_2.12:[3.0.8]-&gt;[3.0.7] (test)
+[error]     org.apache.commons:commons-lang3       (test)  -&gt; (compile,test)  3.9 
+[error]     org.scala-lang.modules:scala-xml_2.12  (test)                     1.2.0  -&gt; 1.1.0 
+[error]     org.scalactic:scalactic_2.12           (test)                     3.0.8  -&gt; 3.0.7 
+[error]     org.scalatest:scalatest_2.12           (test)                     3.0.8  -&gt; 3.0.7 
 </code></pre>
 <p>The error report is broken down into a number of sections:</p>
 <ol>
@@ -149,24 +149,24 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li>
   <p>Dependencies added:</p>
   <pre class="prettyprint"><code class="nocode">2 dependencies added:
-  com.example:artifact1:1.0 (compile)
-  com.example:artifact2:1.2 (test)
+  com.example:artifact1  (compile)  1.0
+  com.example:artifact2  (test)     1.2
 </code></pre></li>
   <li>
   <p>Dependencies removed:</p>
   <pre class="prettyprint"><code class="nocode">1 dependency removed:
-  com.example:artifact3:3.1.1 (runtime)
+  com.example:artifact3  (runtime)  3.1.1
 </code></pre></li>
   <li>
   <p>Changed dependencies:</p>
   <pre class="prettyprint"><code class="nocode">3 dependencies changed:
-  org.example:version:[1.0]-&gt;[2.0] (compile)
-  org.example:configs:1.0 (compile,test)-&gt;(compile)
-  org.example:both:[1.0]-&gt;[2.0] (compile)-&gt;(compile,test)
+  org.example:both     (compile)       -&gt; (compile,test)  1.0  -&gt; 2.0
+  org.example:configs  (compile,test)  -&gt; (compile)       1.0
+  org.example:version  (compile)                          1.0  -&gt; 2.0
 </code></pre></li>
 </ol>
 <div class="source-github">
-The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/v1.1.1/src/main/paradox/getting-started.md">here</a>.
+The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/master/src/main/paradox/getting-started.md">here</a>.
 </div>
 
 <div class="nav-next">
@@ -250,7 +250,7 @@ The source code for this page can be found <a href="https://github.com/stringbea
 <script type="text/javascript" src="lib/prettify/prettify.js"></script>
 <script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
 <script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
-<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.1.1', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.1.2-SNAPSHOT', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
 
 
 </html>
