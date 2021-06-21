@@ -238,6 +238,45 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       .toLongReport shouldBe expected
   }
 
+  it should "sort dependencies" in {
+    val expected =
+      """Dependency lock check failed:
+        |  3 dependencies added:
+        |    com.example:added-2  (compile,test)  1.0
+        |    com.example:added-3  (compile,test)  1.0
+        |    net.example:added-1  (compile,test)  1.0
+        |  3 dependencies removed:
+        |    com.example:removed-1  (compile,test)  1.0
+        |    com.example:removed-2  (compile,test)  1.0
+        |    com.example:removed-3  (compile,test)  1.0
+        |  3 dependencies changed:
+        |    com.example:changed-2  (compile,test)    1.0  -> 1.3
+        |    com.example:changed-3  (compile,test)    1.0  -> 1.2
+        |    net.example:changed-1  (compile,test)    1.0  -> 1.0.1""".stripMargin
+
+    val actual = LockFileMatches
+      .withDependencyChanges(
+        Seq(
+          testDependency(name = "added-3"),
+          testDependency(name = "added-2"),
+          testDependency(org = "net.example", name = "added-1")
+        ),
+        Seq(
+          testDependency(name = "removed-1"),
+          testDependency(name = "removed-3"),
+          testDependency(name = "removed-2")
+        ),
+        Seq(
+          testChangedDependency(name = "changed-3", newVersion = "1.2"),
+          testChangedDependency(name = "changed-2", newVersion = "1.3"),
+          testChangedDependency(org = "net.example", name = "changed-1", newVersion = "1.0.1")
+        )
+      )
+      .toLongReport
+
+    actual shouldBe expected
+  }
+
   it should "render lots of changes" in {
     val expected =
       """Dependency lock check failed:
@@ -249,9 +288,9 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
         |  1 dependency removed:
         |    com.example:artifact3  (runtime)  3.1.1
         |  3 dependencies changed:
-        |    org.example:version  (compile)                          1.0  -> 2.0
+        |    org.example:both     (compile)       -> (compile,test)  1.0  -> 2.0
         |    org.example:configs  (compile,test)  -> (compile)       1.0
-        |    org.example:both     (compile)       -> (compile,test)  1.0  -> 2.0""".stripMargin
+        |    org.example:version  (compile)                          1.0  -> 2.0""".stripMargin
 
     val actual = LockFileMatches
       .withConfigurationsChanged(Seq("test1"), Seq("test2", "test3"))

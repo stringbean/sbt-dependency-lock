@@ -17,7 +17,7 @@
 package software.purpledragon.sbt.lock.model
 
 import software.purpledragon.sbt.lock.util.MessageUtil
-import software.purpledragon.text.TableFormatter
+import software.purpledragon.text.SortedTableFormatter
 
 import scala.collection.mutable
 
@@ -116,8 +116,7 @@ final case class LockFileDiffers(
     }
 
     def dumpDependencies(dependencies: Seq[ResolvedDependency]): String = {
-      val table =
-        new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
+      val table = new SortedTableFormatter(None, prefix = "    ", stripTrailingNewline = true)
 
       dependencies foreach { dep =>
         table.addRow(s"${dep.org}:${dep.name}", s"(${dep.configurations.mkString(",")})", dep.version)
@@ -141,7 +140,7 @@ final case class LockFileDiffers(
     }
 
     def dumpChanges(changes: Seq[ChangedDependency]): String = {
-      val table = new TableFormatter(None, prefix = "    ", stripTrailingNewline = true)
+      val table = new SortedTableFormatter(None, prefix = "    ", stripTrailingNewline = true)
 
       changes foreach { change =>
         table.addRow(
