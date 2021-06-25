@@ -47,8 +47,6 @@ object DependencyLockPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     dependencyLockFile := baseDirectory.value / "build.sbt.lock",
-    dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
-    dependencyLockExclusion := DependencyFilter.fnToModuleFilter(_ => false),
     dependencyLockWrite := {
       val dest = dependencyLockFile.value
       val updateReport = update.value
@@ -121,5 +119,10 @@ object DependencyLockPlugin extends AutoPlugin {
         report
       }
     }.value
+  )
+
+  override def globalSettings: Seq[Def.Setting[_]] = Seq(
+    dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
+    dependencyLockExclusion := DependencyFilter.fnToModuleFilter(_ => false)
   )
 }
