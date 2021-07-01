@@ -16,28 +16,25 @@
 
 package software.purpledragon.sbt.lock.model
 
-import java.time.Instant
-
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.Instant
 import scala.collection.SortedSet
 
 class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
+  private val dependency1Artifact = ResolvedArtifact("package-1.jar", "hash-1")
+  private val dependency1 =
+    ResolvedDependency("com.example", "package-1", "1.0.0", SortedSet(dependency1Artifact), SortedSet("test-1"))
+  private val dependency2 =
+    ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
+
   private val EmptyLockFile = DependencyLockFile(1, Instant.now(), Nil, Nil)
   private val TestLockFile = DependencyLockFile(
     1,
     Instant.now(),
     Seq("test-1", "test-2"),
-    Seq(
-      ResolvedDependency(
-        "com.example",
-        "package-1",
-        "1.0.0",
-        SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
-        SortedSet("test-1")),
-      ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
-    )
+    Seq(dependency1, dependency2)
   )
 
   "findChanges" should "return LockFileMatches for identical lockfiles" in {
@@ -78,12 +75,13 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return LockFileDiffers if dependency added" in {
-    val newDependency = ResolvedDependency(
-      "com.example",
-      "package-3",
-      "3.0",
-      SortedSet(ResolvedArtifact("package-3.jar", "hash-3")),
-      SortedSet("test-1"))
+    val newDependency =
+      ResolvedDependency(
+        "com.example",
+        "package-3",
+        "3.0",
+        SortedSet(ResolvedArtifact("package-3.jar", "hash-3")),
+        SortedSet("test-1"))
 
     val left = TestLockFile
     val right = left.copy(dependencies = left.dependencies :+ newDependency)
@@ -101,12 +99,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   it should "return LockFileDiffers if dependency changed" in {
     val left = TestLockFile
     val right = left.copy(
-      dependencies = left.dependencies.tail :+ ResolvedDependency(
-        "com.example",
-        "package-1",
-        "2.0.0",
-        SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
-        SortedSet("test-1", "test-2"))
+      dependencies = left.dependencies.head.copy(version = "2.0.0", configurations = SortedSet("test-1", "test-2")) +:
+        left.dependencies.tail
     )
 
     left.findChanges(right) shouldBe LockFileDiffers(
@@ -120,10 +114,103 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
           "package-1",
           "1.0.0",
           "2.0.0",
-          SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
-          SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
           SortedSet("test-1"),
-          SortedSet("test-1", "test-2")
+          SortedSet("test-1", "test-2"),
+          SortedSet.empty,
+          SortedSet.empty,
+          SortedSet.empty
+        ))
+    )
+  }
+
+  it should "return LockFileDiffers if artifact changed" in {
+    val left = TestLockFile
+    val right = left.copy(
+      dependencies = left.dependencies map { dep =>
+        dep.copy(artifacts = dep.artifacts map { art =>
+          art.copy(hash = art.hash + "a")
+        })
+      }
+    )
+
+    left.findChanges(right) shouldBe LockFileDiffers(
+      Nil,
+      Nil,
+      Nil,
+      Nil,
+      Seq(
+        ChangedDependency(
+          "com.example",
+          "package-1",
+          "1.0.0",
+          "1.0.0",
+          SortedSet("test-1"),
+          SortedSet("test-1"),
+          SortedSet.empty,
+          SortedSet.empty,
+          SortedSet(ChangedArtifact("package-1.jar", "hash-1", "hash-1a"))
+        ))
+    )
+  }
+
+  it should "return LockFileDiffers if artifact added" in {
+    val left = TestLockFile
+
+    val right = left.copy(
+      dependencies = Seq(
+        dependency1.copy(
+          artifacts = SortedSet(
+            dependency1Artifact,
+            ResolvedArtifact("package-1a.jar", "hash-1a")
+          )),
+        dependency2
+      ))
+
+    left.findChanges(right) shouldBe LockFileDiffers(
+      Nil,
+      Nil,
+      Nil,
+      Nil,
+      Seq(
+        ChangedDependency(
+          "com.example",
+          "package-1",
+          "1.0.0",
+          "1.0.0",
+          SortedSet("test-1"),
+          SortedSet("test-1"),
+          SortedSet(ResolvedArtifact("package-1a.jar", "hash-1a")),
+          SortedSet.empty,
+          SortedSet.empty
+        ))
+    )
+  }
+
+  it should "return LockFileDiffers if artifact removed" in {
+    val left = TestLockFile
+
+    val right = left.copy(
+      dependencies = Seq(
+        dependency1.copy(artifacts = SortedSet.empty),
+        dependency2
+      ))
+
+    left.findChanges(right) shouldBe LockFileDiffers(
+      Nil,
+      Nil,
+      Nil,
+      Nil,
+      Seq(
+        ChangedDependency(
+          "com.example",
+          "package-1",
+          "1.0.0",
+          "1.0.0",
+          SortedSet("test-1"),
+          SortedSet("test-1"),
+          SortedSet.empty,
+          SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
+          SortedSet.empty
         ))
     )
   }

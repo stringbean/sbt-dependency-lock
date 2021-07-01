@@ -166,8 +166,45 @@ final case class LockFileDiffers(
         dumpChanges(otherChanged))
     }
 
+    def dumpArtifactChanges(changes: Seq[ChangedDependency]): String = {
+      val changesBuilder = new mutable.StringBuilder()
+
+      changes foreach { change =>
+        changesBuilder ++= "    "
+        changesBuilder ++= change.org
+        changesBuilder ++= ":"
+        changesBuilder ++= change.name
+        changesBuilder ++= "  ("
+        change.oldConfigurations.addString(changesBuilder, ",")
+        changesBuilder ++= ")  "
+        changesBuilder ++= change.oldVersion
+        changesBuilder ++= ":\n"
+
+        val table = new SortedTableFormatter(None, prefix = "      ", stripTrailingNewline = false)
+
+        change.addedArtifacts foreach { added =>
+          table.addRow("(added)", added.name, added.hash)
+        }
+
+        change.removedArtifacts foreach { removed =>
+          table.addRow("(removed)", removed.name, removed.hash)
+        }
+
+        change.changedArtifacts foreach { changed =>
+          table.addRow("(changed)", changed.name, changed.oldHash, s"-> ${changed.newHash}")
+        }
+
+        changesBuilder ++= table.toString()
+      }
+
+      changesBuilder.toString()
+    }
+
     if (artifactChanged.nonEmpty) {
-      errors += MessageUtil.formatPlural("lock.status.full.artifacts.changed", artifactChanged.size)
+      errors += MessageUtil.formatPlural(
+        "lock.status.full.artifacts.changed",
+        artifactChanged.size,
+        dumpArtifactChanges(artifactChanged))
     }
 
     MessageUtil.formatMessage("lock.status.failed.long", errors.mkString("\n"))

@@ -80,10 +80,10 @@ final case class DependencyLockFile(
             depref.name,
             ourDep.version,
             otherDep.version,
-            ourDep.artifacts,
-            otherDep.artifacts,
             ourDep.configurations,
-            otherDep.configurations)
+            otherDep.configurations,
+            ourDep.artifacts,
+            otherDep.artifacts)
         } else {
           changes
         }
