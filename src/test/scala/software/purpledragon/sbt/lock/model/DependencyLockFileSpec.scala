@@ -16,18 +16,17 @@
 
 package software.purpledragon.sbt.lock.model
 
-import java.time.Instant
-
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.Instant
 import scala.collection.SortedSet
 
 class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
-  private val Dependency1Artifact = ResolvedArtifact("package-1.jar", "hash-1")
-  private val Dependency1 =
-    ResolvedDependency("com.example", "package-1", "1.0.0", SortedSet(Dependency1Artifact), SortedSet("test-1"))
-  private val Dependency2 =
+  private val dependency1Artifact = ResolvedArtifact("package-1.jar", "hash-1")
+  private val dependency1 =
+    ResolvedDependency("com.example", "package-1", "1.0.0", SortedSet(dependency1Artifact), SortedSet("test-1"))
+  private val dependency2 =
     ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
 
   private val EmptyLockFile = DependencyLockFile(1, Instant.now(), Nil, Nil)
@@ -35,7 +34,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
     1,
     Instant.now(),
     Seq("test-1", "test-2"),
-    Seq(Dependency1, Dependency2)
+    Seq(dependency1, dependency2)
   )
 
   "findChanges" should "return LockFileMatches for identical lockfiles" in {
@@ -159,12 +158,12 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
 
     val right = left.copy(
       dependencies = Seq(
-        Dependency1.copy(
+        dependency1.copy(
           artifacts = SortedSet(
-            Dependency1Artifact,
+            dependency1Artifact,
             ResolvedArtifact("package-1a.jar", "hash-1a")
           )),
-        Dependency2
+        dependency2
       ))
 
     left.findChanges(right) shouldBe LockFileDiffers(
@@ -192,8 +191,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
 
     val right = left.copy(
       dependencies = Seq(
-        Dependency1.copy(artifacts = SortedSet.empty),
-        Dependency2
+        dependency1.copy(artifacts = SortedSet.empty),
+        dependency2
       ))
 
     left.findChanges(right) shouldBe LockFileDiffers(
