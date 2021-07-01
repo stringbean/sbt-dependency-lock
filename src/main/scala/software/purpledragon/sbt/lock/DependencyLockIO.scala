@@ -16,12 +16,13 @@
 
 package software.purpledragon.sbt.lock
 
-import java.io.File
 import io.circe.parser._
 import io.circe.syntax._
 import sbt.io.IO
 import software.purpledragon.sbt.lock.model.lockfile.v1.Decoders._
 import software.purpledragon.sbt.lock.model.lockfile.v1.DependencyLockFile
+
+import java.io.File
 
 object DependencyLockIO {
   def writeLockFile(lockFile: DependencyLockFile, dest: File): Unit = {
@@ -30,14 +31,18 @@ object DependencyLockIO {
 
   def readLockFile(src: File): Option[DependencyLockFile] = {
     if (src.exists()) {
-      parse(IO.read(src)) match {
-        case Right(json) =>
-          json.as[DependencyLockFile].toOption
-        case _ =>
-          None
-      }
+      parseLockFile(IO.read(src))
     } else {
       None
+    }
+  }
+
+  def parseLockFile(contents: String): Option[DependencyLockFile] = {
+    parse(contents) match {
+      case Right(json) =>
+        json.as[DependencyLockFile].toOption
+      case _ =>
+        None
     }
   }
 }
