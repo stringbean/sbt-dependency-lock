@@ -16,6 +16,8 @@
 
 package software.purpledragon.sbt.lock.model
 
+import software.purpledragon.sbt.lock.model.lockfile.v1.ResolvedArtifact
+
 import scala.collection.SortedSet
 
 final case class ChangedDependency(

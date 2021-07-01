@@ -20,7 +20,8 @@ import sbt.Keys._
 import sbt._
 import sbt.internal.util.ManagedLogger
 import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
-import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
+import software.purpledragon.sbt.lock.model.LockFileMatches
+import software.purpledragon.sbt.lock.model.lockfile.v1.DependencyLockFile
 import software.purpledragon.sbt.lock.util.MessageUtil
 
 object DependencyLockPlugin extends AutoPlugin {

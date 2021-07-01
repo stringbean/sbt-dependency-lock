@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock.model
+package software.purpledragon.sbt.lock.model.lockfile.v1
 
-import io.circe._
-import io.circe.generic.semiauto._
+import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+import io.circe.{Decoder, Encoder}
 
 object Decoders {
   implicit val lockfileDecoder: Decoder[DependencyLockFile] = deriveDecoder[DependencyLockFile]

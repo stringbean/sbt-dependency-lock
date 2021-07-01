@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock.model
+package software.purpledragon.sbt.lock.model.lockfile.v1
+
+import software.purpledragon.sbt.lock.model.{ChangedDependency, DependencyRef, LockFileMatches, LockFileStatus}
 
 import java.time.Instant
 import java.util.Objects

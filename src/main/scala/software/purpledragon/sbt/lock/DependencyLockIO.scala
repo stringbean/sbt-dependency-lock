@@ -17,12 +17,11 @@
 package software.purpledragon.sbt.lock
 
 import java.io.File
-
 import io.circe.parser._
 import io.circe.syntax._
 import sbt.io.IO
-import software.purpledragon.sbt.lock.model.Decoders._
-import software.purpledragon.sbt.lock.model.DependencyLockFile
+import software.purpledragon.sbt.lock.model.lockfile.v1.Decoders._
+import software.purpledragon.sbt.lock.model.lockfile.v1.DependencyLockFile
 
 object DependencyLockIO {
   def writeLockFile(lockFile: DependencyLockFile, dest: File): Unit = {
