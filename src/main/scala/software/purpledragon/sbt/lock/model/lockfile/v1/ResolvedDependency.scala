@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock.model
+package software.purpledragon.sbt.lock.model.lockfile.v1
 
+import scala.collection.SortedSet
 import scala.math.Ordered.orderingToOrdered
 
-final case class ResolvedArtifact(name: String, hash: String) extends Ordered[ResolvedArtifact] {
-  override def compare(that: ResolvedArtifact): Int = {
-    (name, hash) compare (that.name, that.hash)
+final case class ResolvedDependency(
+    org: String,
+    name: String,
+    version: String,
+    artifacts: SortedSet[ResolvedArtifact],
+    configurations: SortedSet[String])
+    extends Ordered[ResolvedDependency] {
+
+  override def compare(that: ResolvedDependency): Int = {
+    (org, name, version) compare (that.org, that.name, that.version)
+  }
+
+  def withConfiguration(conf: String): ResolvedDependency = {
+    copy(configurations = configurations + conf)
   }
 }

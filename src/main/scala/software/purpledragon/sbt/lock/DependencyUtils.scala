@@ -17,11 +17,12 @@
 package software.purpledragon.sbt.lock
 
 import java.time.Instant
-
 import sbt._
-import software.purpledragon.sbt.lock.model.{DependencyLockFile, DependencyRef, ResolvedArtifact, ResolvedDependency}
+import software.purpledragon.sbt.lock.model.DependencyRef
+import software.purpledragon.sbt.lock.model.lockfile.v1
+import software.purpledragon.sbt.lock.model.lockfile.v1.{DependencyLockFile, ResolvedArtifact, ResolvedDependency}
 
-import scala.collection.{immutable, mutable, SortedSet}
+import scala.collection.{SortedSet, immutable, mutable}
 
 object DependencyUtils {
   def resolve(updateReport: UpdateReport, configs: Seq[ConfigRef]): DependencyLockFile = {
@@ -39,7 +40,7 @@ object DependencyUtils {
         }
       }
 
-    DependencyLockFile(
+    v1.DependencyLockFile(
       1,
       Instant.now(),
       configurations.map(_.configuration.name).sorted,
@@ -75,7 +76,7 @@ object DependencyUtils {
       ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", hash)
     }
 
-    ResolvedDependency(
+    v1.ResolvedDependency(
       module.module.organization,
       module.module.name,
       module.module.revision,

@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock.model
-
-import java.time.Instant
+package software.purpledragon.sbt.lock.model.lockfile.v1
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import software.purpledragon.sbt.lock.model.lockfile.v1
+import software.purpledragon.sbt.lock.model.{ChangedDependency, LockFileDiffers, LockFileMatches}
 
+import java.time.Instant
 import scala.collection.SortedSet
 
 class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   private val EmptyLockFile = DependencyLockFile(1, Instant.now(), Nil, Nil)
-  private val TestLockFile = DependencyLockFile(
+  private val TestLockFile = v1.DependencyLockFile(
     1,
     Instant.now(),
     Seq("test-1", "test-2"),
@@ -36,7 +37,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
         "1.0.0",
         SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
         SortedSet("test-1")),
-      ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
+      v1.ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
     )
   )
 
@@ -48,7 +49,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return LockFileMatches if timestamp differs" in {
-    val left = DependencyLockFile(1, Instant.now(), Nil, Nil)
+    val left = v1.DependencyLockFile(1, Instant.now(), Nil, Nil)
     val right = left.copy(timestamp = Instant.now())
 
     left.findChanges(right) shouldBe LockFileMatches
@@ -78,7 +79,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return LockFileDiffers if dependency added" in {
-    val newDependency = ResolvedDependency(
+    val newDependency = v1.ResolvedDependency(
       "com.example",
       "package-3",
       "3.0",
@@ -101,7 +102,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
   it should "return LockFileDiffers if dependency changed" in {
     val left = TestLockFile
     val right = left.copy(
-      dependencies = left.dependencies.tail :+ ResolvedDependency(
+      dependencies = left.dependencies.tail :+ v1.ResolvedDependency(
         "com.example",
         "package-1",
         "2.0.0",

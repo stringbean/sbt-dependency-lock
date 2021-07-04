@@ -1,8 +1,13 @@
 target
 project/project
 project/target
+.bsp
 .cache
 .classpath
 .project
 .settings
-.bsp
+# vscode related files
+.bloop
+.metals
+.vscode
+project/metals.sbt

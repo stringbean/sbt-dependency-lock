@@ -16,6 +16,7 @@
 
 package software.purpledragon.sbt.lock.model
 
+import software.purpledragon.sbt.lock.model.lockfile.v1.ResolvedDependency
 import software.purpledragon.sbt.lock.util.MessageUtil
 import software.purpledragon.text.SortedTableFormatter
 
