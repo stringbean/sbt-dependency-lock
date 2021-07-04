@@ -20,7 +20,7 @@ organizationName := "Michael Stringer"
 startYear        := Some(2019)
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
-scriptedLaunchOpts           := {
+scriptedLaunchOpts := {
   scriptedLaunchOpts.value ++
     Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 }
@@ -31,13 +31,14 @@ developers := List(
   Developer("stringbean", "Michael Stringer", "@the_stringbean", url("https://github.com/stringbean")),
 )
 
-homepage       := Some(url("https://github.com/stringbean/sbt-dependency-lock"))
-scmInfo        := Some(
+homepage               := Some(url("https://github.com/stringbean/sbt-dependency-lock"))
+scmInfo                := Some(
   ScmInfo(
     url("https://github.com/stringbean/sbt-dependency-lock"),
     "https://github.com/stringbean/sbt-dependency-lock.git"))
-git.remoteRepo := "git@github.com:stringbean/sbt-dependency-lock.git"
-publishTo      := sonatypePublishToBundle.value
+git.remoteRepo         := "git@github.com:stringbean/sbt-dependency-lock.git"
+paradoxNavigationDepth := 3
+publishTo              := sonatypePublishToBundle.value
 
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations.*
 

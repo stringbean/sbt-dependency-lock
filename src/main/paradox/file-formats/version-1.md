@@ -13,7 +13,7 @@ dependencies.
 #### lockVersion
 
 * **Type:** Integer.
-* **Description:** Version of the lockfile - always 1.
+* **Description:** Version of the lockfile: `1`.
 
 #### timestamp
 
