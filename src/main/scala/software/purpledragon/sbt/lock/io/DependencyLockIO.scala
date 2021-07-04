@@ -14,35 +14,56 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock
+package software.purpledragon.sbt.lock.io
 
 import io.circe.parser._
 import io.circe.syntax._
+import io.circe.{Decoder, Json}
 import sbt.io.IO
 import software.purpledragon.sbt.lock.model.lockfile.v1.Decoders._
 import software.purpledragon.sbt.lock.model.lockfile.v1.DependencyLockFile
 
 import java.io.File
+import scala.util.{Failure, Success, Try}
 
 object DependencyLockIO {
   def writeLockFile(lockFile: DependencyLockFile, dest: File): Unit = {
     IO.write(dest, lockFile.asJson.spaces2)
   }
 
-  def readLockFile(src: File): Option[DependencyLockFile] = {
+  def readLockFile(src: File): Try[DependencyLockFile] = {
     if (src.exists()) {
       parseLockFile(IO.read(src))
     } else {
-      None
+      Failure(new MissingLockfileException())
     }
   }
 
-  def parseLockFile(contents: String): Option[DependencyLockFile] = {
+  def parseLockFile(contents: String): Try[DependencyLockFile] = {
     parse(contents) match {
       case Right(json) =>
-        json.as[DependencyLockFile].toOption
+        json.hcursor.get[Int]("lockVersion") match {
+          case Right(1) =>
+            decodeJson[DependencyLockFile](json)
+
+          case Right(version) =>
+            Failure(new InvalidLockfileVersionException(version))
+
+          case _ =>
+            // missing lockVersion field - invalid lockfile
+            Failure(new InvalidFormatException())
+        }
+
       case _ =>
-        None
+        // invalid json
+        Failure(new InvalidFormatException())
+    }
+  }
+
+  private def decodeJson[T](json: Json)(implicit d: Decoder[T]): Try[T] = {
+    json.as[T] match {
+      case Right(parsed) => Success(parsed)
+      case Left(_) => Failure(new InvalidFormatException())
     }
   }
 }

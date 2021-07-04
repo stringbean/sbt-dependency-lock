@@ -16,40 +16,45 @@
 
 package software.purpledragon.sbt.lock
 
-import org.scalatest.OptionValues._
+import org.scalatest.TryValues._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import software.purpledragon.sbt.lock.io.{DependencyLockIO, InvalidFormatException, InvalidLockfileVersionException}
 import software.purpledragon.sbt.lock.model.lockfile.v1.{DependencyLockFile, ResolvedArtifact, ResolvedDependency}
 
 import java.time.Instant
 import scala.collection.SortedSet
 import scala.io.Source
+import scala.util.Try
 
 class DependencyLockIOSpec extends AnyFlatSpec with Matchers {
-  "parseLockFile" should "return None if not valid JSON" in {
-    DependencyLockIO.parseLockFile("jibberish")
+  "parseLockFile" should "return Failure if not valid JSON" in {
+    DependencyLockIO.parseLockFile("jibberish").failure.exception shouldBe an[InvalidFormatException]
   }
 
-  it should "return None if version is unknown" in {
-    parseFromResource("unknown-version.json") shouldBe None
+  it should "return Failure if version is unknown" in {
+    val versionError = parseFromResource("unknown-version.json").failure.exception
+
+    versionError shouldBe an[InvalidLockfileVersionException]
+    versionError.asInstanceOf[InvalidLockfileVersionException].version shouldBe 9999
   }
 
   "parseLockFile (v1)" should "parse empty dependencies" in {
     val parsed = parseFromResource("v1/empty-dependencies.json")
 
-    parsed.value.lockVersion shouldBe 1
-    parsed.value.timestamp shouldBe Instant.parse("2021-05-11T12:00:00.000Z")
-    parsed.value.configurations shouldBe Seq("compile", "test")
-    parsed.value.dependencies shouldBe empty
+    parsed.success.value.lockVersion shouldBe 1
+    parsed.success.value.timestamp shouldBe Instant.parse("2021-05-11T12:00:00.000Z")
+    parsed.success.value.configurations shouldBe Seq("compile", "test")
+    parsed.success.value.dependencies shouldBe empty
   }
 
   it should "parse lockfile with dependencies" in {
     val parsed = parseFromResource("v1/with-dependencies.json")
 
-    parsed.value.lockVersion shouldBe 1
-    parsed.value.timestamp shouldBe Instant.parse("2021-05-11T12:00:00.000Z")
-    parsed.value.configurations shouldBe Seq("compile", "test")
-    parsed.value.dependencies shouldBe Seq(
+    parsed.success.value.lockVersion shouldBe 1
+    parsed.success.value.timestamp shouldBe Instant.parse("2021-05-11T12:00:00.000Z")
+    parsed.success.value.configurations shouldBe Seq("compile", "test")
+    parsed.success.value.dependencies shouldBe Seq(
       ResolvedDependency(
         "org.scala-lang",
         "scala-library",
@@ -77,7 +82,11 @@ class DependencyLockIOSpec extends AnyFlatSpec with Matchers {
     )
   }
 
-  private def parseFromResource(name: String): Option[DependencyLockFile] = {
+  it should "return Failure if format is incorrect" in {
+    parseFromResource("v1/invalid.json").failure.exception shouldBe an[InvalidFormatException]
+  }
+
+  private def parseFromResource(name: String): Try[DependencyLockFile] = {
     val contents = Source.fromResource(s"lockfile/$name").getLines().mkString("\n")
     DependencyLockIO.parseLockFile(contents)
   }

@@ -20,9 +20,12 @@ import sbt.Keys._
 import sbt._
 import sbt.internal.util.ManagedLogger
 import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
+import software.purpledragon.sbt.lock.io.{DependencyLockIO, LockfileException}
 import software.purpledragon.sbt.lock.model.LockFileMatches
 import software.purpledragon.sbt.lock.model.lockfile.v1.DependencyLockFile
 import software.purpledragon.sbt.lock.util.MessageUtil
+
+import scala.util.{Failure, Success, Try}
 
 object DependencyLockPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
@@ -30,7 +33,7 @@ object DependencyLockPlugin extends AutoPlugin {
   object autoImport {
     val dependencyLockFile = settingKey[File]("lockfile to generate")
     val dependencyLockWrite = taskKey[File]("write dependencies to lockfile")
-    val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lockfile")
+    val dependencyLockRead = taskKey[Try[DependencyLockFile]]("read dependencies from lockfile")
 
     val dependencyLockCheck = taskKey[Unit]("check if dependency lock is up to date")
 
@@ -88,7 +91,7 @@ object DependencyLockPlugin extends AutoPlugin {
         logger.debug("Automatically checking lockfile")
 
         dependencyLockRead.value match {
-          case Some(currentFile) =>
+          case Success(currentFile) =>
             val updatedFile = DependencyUtils.resolve(report, thisProject.value.configurations.map(_.toConfigRef))
 
             val changes = currentFile.findChanges(updatedFile)
@@ -106,8 +109,12 @@ object DependencyLockPlugin extends AutoPlugin {
               // scenario shouldn't happen - failed check, but we're not checking...
             }
 
-          case None =>
-            logger.warn("no lockfile found - please run dependencyLockWrite")
+          case Failure(error: LockfileException) =>
+            logger.warn(error.getMessage)
+
+          case Failure(error) =>
+            logger.error("Unexpected error while parsing lockfile")
+            throw error
         }
       }
 
