@@ -19,3 +19,5 @@ The different levels of checking available are:
 * `CheckDisabled`: no checks will be performed after `update`s.
 * `WarnOnError`: a check will be performed after `update`s, and a warning printed if there are any changes.
 * `FailOnError`: a check will be performed after `update`s, and the build will fail if there are any changes.
+* `AutoUpdate`: a check will be performed after `update`s, and the lockfile will be automatically updated if there are
+  any changes.
