@@ -1,0 +1,4 @@
+> dependencyLockWrite
+$ exists build.sbt.lock
+> dependencyLockCheck
+> checkLockfile

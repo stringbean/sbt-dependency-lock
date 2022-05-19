@@ -51,7 +51,14 @@ object DependencyLockPlugin extends AutoPlugin {
       val updateReport = update.value
 
       val lockFile = DependencyUtils.resolve(updateReport, thisProject.value.configurations.map(_.toConfigRef))
-      DependencyLockIO.writeLockFile(lockFile, dest)
+
+      val updateStatus = DependencyLockIO
+        .readLockFile(dest)
+        .map(_.findChanges(lockFile))
+
+      if (!updateStatus.contains(LockFileMatches)) {
+        DependencyLockIO.writeLockFile(lockFile, dest)
+      }
       dest
     },
     dependencyLockRead := {
