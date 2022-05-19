@@ -1,0 +1,4 @@
+> dependencyLockWrite
+-$ must-mirror build.sbt.lock build.sbt.lock.orig
+> dependencyLockCheck
+> checkLockfile
