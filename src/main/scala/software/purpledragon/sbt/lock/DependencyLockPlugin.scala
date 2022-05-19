@@ -16,8 +16,8 @@
 
 package software.purpledragon.sbt.lock
 
-import sbt.Keys._
 import sbt._
+import sbt.Keys._
 import sbt.internal.util.ManagedLogger
 import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
@@ -100,6 +100,12 @@ object DependencyLockPlugin extends AutoPlugin {
               case (_, FailOnError) =>
                 logger.error(MessageUtil.formatMessage("update.status.error"))
                 sys.error(changes.toLongReport)
+              case (_, AutoUpdate) =>
+                logger.warn(MessageUtil.formatMessage("update.status.auto"))
+
+                // rewrite the lockfile
+                val dest = dependencyLockFile.value
+                DependencyLockIO.writeLockFile(updatedFile, dest)
 
               case _ =>
               // scenario shouldn't happen - failed check, but we're not checking...

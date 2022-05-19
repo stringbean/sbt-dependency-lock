@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "software.purpledragon" %% "text-utils" % "1.3.1",
-  "org.scalatest"         %% "scalatest"  % "3.2.9" % Test
+  "org.scalatest"         %% "scalatest"  % "3.2.12" % Test
 )
 
 organizationName := "Michael Stringer"
@@ -30,7 +30,7 @@ scriptedLaunchOpts := { scriptedLaunchOpts.value ++
   Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 }
 
-ThisBuild / scapegoatVersion  := "1.4.9"
+ThisBuild / scapegoatVersion  := "1.4.11"
 
 developers := List(
   Developer("stringbean", "Michael Stringer", "@the_stringbean", url("https://github.com/stringbean"))
