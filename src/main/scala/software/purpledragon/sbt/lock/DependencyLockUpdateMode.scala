@@ -19,5 +19,5 @@ package software.purpledragon.sbt.lock
 object DependencyLockUpdateMode extends Enumeration {
   type DependencyLockUpdateMode = Value
 
-  val CheckDisabled, WarnOnError, FailOnError = Value
+  val CheckDisabled, WarnOnError, FailOnError, AutoUpdate = Value
 }
