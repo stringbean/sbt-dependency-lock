@@ -21,3 +21,9 @@ The different levels of checking available are:
 * `FailOnError`: a check will be performed after `update`s, and the build will fail if there are any changes.
 * `AutoUpdate`: a check will be performed after `update`s, and the lockfile will be automatically updated if there are
   any changes.
+
+### dependencyLockModuleFilter
+
+* **Description:** Excludes the specified dependencies from the lockfile.
+* **Accepts:** `sbt.librarymanagement.ModuleFilter`
+* **Default:** `DependencyFilter.fnToModuleFilter(_ => false)` (no exclusions)

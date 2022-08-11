@@ -19,12 +19,13 @@ package software.purpledragon.sbt.lock
 import java.time.Instant
 
 import sbt._
+import sbt.librarymanagement.ModuleFilter
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, DependencyRef, ResolvedArtifact, ResolvedDependency}
 
 import scala.collection.{immutable, mutable, SortedSet}
 
 object DependencyUtils {
-  def resolve(updateReport: UpdateReport, configs: Seq[ConfigRef]): DependencyLockFile = {
+  def resolve(updateReport: UpdateReport, exclusion: ModuleFilter, configs: Seq[ConfigRef]): DependencyLockFile = {
     val configurations: immutable.Seq[ConfigurationReport] =
       updateReport.configurations.filter(config => configs.contains(config.configuration))
 
@@ -34,7 +35,11 @@ object DependencyUtils {
       configurations.foldLeft(Map.empty[DependencyRef, ResolvedDependency]) { (acc, conf) =>
         val configName = conf.configuration.name
 
-        conf.modules.foldLeft(acc) { (acc2, module) =>
+        val filteredModules = conf.modules.filterNot { moduleReport =>
+          exclusion(moduleReport.module)
+        }
+
+        filteredModules.foldLeft(acc) { (acc2, module) =>
           resolveModuleForConfig(acc2, configName, module, checksumCache)
         }
       }
