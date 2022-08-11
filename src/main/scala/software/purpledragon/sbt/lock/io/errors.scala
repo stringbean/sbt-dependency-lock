@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package software.purpledragon.sbt.lock.model
+package software.purpledragon.sbt.lock.io
 
-import software.purpledragon.sbt.lock.model.lockfile.v1.ResolvedArtifact
+import software.purpledragon.sbt.lock.util.MessageUtil
 
-import scala.collection.SortedSet
+class LockfileException(messageKey: String, args: Any*)
+    extends Exception(MessageUtil.formatMessage(messageKey, args: _*))
 
-final case class ChangedDependency(
-    org: String,
-    name: String,
-    oldVersion: String,
-    newVersion: String,
-    oldArtifacts: SortedSet[ResolvedArtifact],
-    newArtifacts: SortedSet[ResolvedArtifact],
-    oldConfigurations: SortedSet[String],
-    newConfigurations: SortedSet[String]) {
-
-  def versionChanged: Boolean = oldVersion != newVersion
-  def configurationsChanged: Boolean = oldConfigurations != newConfigurations
-}
+class MissingLockfileException extends LockfileException("error.lockfile.missing")
+class InvalidFormatException extends LockfileException("error.lockfile.invalid")
+class InvalidLockfileVersionException(val version: Int) extends LockfileException("error.lockfile.version", version)

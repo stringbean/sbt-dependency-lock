@@ -18,6 +18,8 @@ package software.purpledragon.sbt.lock.model
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import software.purpledragon.sbt.lock.model.lockfile.v1
+import software.purpledragon.sbt.lock.model.lockfile.v1.{ResolvedArtifact, ResolvedDependency}
 
 import scala.collection.SortedSet
 
@@ -323,7 +325,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       name: String = "artifact",
       version: String = "1.0",
       configs: SortedSet[String] = SortedSet("compile", "test")): ResolvedDependency = {
-    ResolvedDependency(org, name, version, SortedSet.empty, configs)
+    v1.ResolvedDependency(org, name, version, SortedSet.empty, configs)
   }
 
   private def testChangedDependency(
