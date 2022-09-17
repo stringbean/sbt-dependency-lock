@@ -21,4 +21,4 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: temurin
       - name: Run tests
-        run: sbt test scripted headerCheck scapegoat
+        run: sbt test scripted headerCheck scalafmtAllCheck scapegoat

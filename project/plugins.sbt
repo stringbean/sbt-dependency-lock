@@ -6,6 +6,7 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.13")
 // code style
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.7.0")
 addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.1.1")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
 
 // documentation
 addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.4.1")
