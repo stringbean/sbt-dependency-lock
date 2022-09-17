@@ -36,7 +36,7 @@ object MessageUtil {
     val formatStrings = Array(
       messages.getString(s"$baseKey.none"),
       messages.getString(s"$baseKey.singular"),
-      messages.getString(s"$baseKey.multiple")
+      messages.getString(s"$baseKey.multiple"),
     )
 
     val choice = new ChoiceFormat(Array(0, 1, 2), formatStrings)

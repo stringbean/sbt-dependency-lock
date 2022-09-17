@@ -18,7 +18,7 @@ package software.purpledragon.sbt.lock
 
 import java.time.Instant
 
-import sbt._
+import sbt.*
 import sbt.librarymanagement.ModuleFilter
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, DependencyRef, ResolvedArtifact, ResolvedDependency}
 

@@ -16,8 +16,8 @@
 
 package software.purpledragon.sbt.lock.model
 
-import io.circe._
-import io.circe.generic.semiauto._
+import io.circe.*
+import io.circe.generic.semiauto.*
 
 object Decoders {
   implicit val lockfileDecoder: Decoder[DependencyLockFile] = deriveDecoder[DependencyLockFile]

@@ -76,7 +76,7 @@ final case class LockFileDiffers(
       errors += MessageUtil.formatMessage(
         "lock.status.configs.info",
         MessageUtil.formatPlural("lock.status.configs", addedConfigs.size),
-        MessageUtil.formatPlural("lock.status.configs", removedConfigs.size)
+        MessageUtil.formatPlural("lock.status.configs", removedConfigs.size),
       )
     }
 
@@ -87,7 +87,7 @@ final case class LockFileDiffers(
         "lock.status.dependencies.info",
         MessageUtil.formatPlural("lock.status.dependencies", addedDependencies.size),
         MessageUtil.formatPlural("lock.status.dependencies", removedDependencies.size),
-        MessageUtil.formatPlural("lock.status.dependencies", changedDependencies.size)
+        MessageUtil.formatPlural("lock.status.dependencies", changedDependencies.size),
       )
     }
 
@@ -150,7 +150,7 @@ final case class LockFileDiffers(
             s"-> (${change.newConfigurations.mkString(",")})"
           else "",
           change.oldVersion,
-          if (change.versionChanged) s"-> ${change.newVersion}" else ""
+          if (change.versionChanged) s"-> ${change.newVersion}" else "",
         )
       }
 
