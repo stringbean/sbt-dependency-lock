@@ -27,3 +27,9 @@ The different levels of checking available are:
 * **Description:** Excludes the specified dependencies from the lockfile.
 * **Accepts:** `sbt.librarymanagement.ModuleFilter`
 * **Default:** `DependencyFilter.fnToModuleFilter(_ => false)` (no exclusions)
+
+### dependencyLockConfigurationFilter
+
+* **Description:** Excludes the specified configurations from the lockfile.
+* **Accepts:** `sbt.librarymanagement.ConfigurationFilter`
+* **Default:** `DependencyFilter.fnToConfigurationFilter(_ => false)` (no exclusions)

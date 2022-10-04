@@ -19,7 +19,7 @@ package software.purpledragon.sbt.lock
 import sbt._
 import sbt.Keys._
 import sbt.internal.util.ManagedLogger
-import sbt.librarymanagement.{DependencyFilter, ModuleFilter}
+import sbt.librarymanagement.{DependencyFilter, ModuleFilter, ConfigurationFilter}
 import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
 import software.purpledragon.sbt.lock.util.MessageUtil
@@ -32,6 +32,7 @@ object DependencyLockPlugin extends AutoPlugin {
     val dependencyLockWrite = taskKey[File]("write dependencies to lockfile")
     val dependencyLockRead = taskKey[Option[DependencyLockFile]]("read dependencies from lockfile")
     val dependencyLockModuleFilter = settingKey[ModuleFilter]("exclusion filter for dependencies")
+    val dependencyLockConfigurationFilter = settingKey[ConfigurationFilter]("exclusion filter for configurations")
 
     val dependencyLockCheck = taskKey[Unit]("check if dependency lock is up to date")
 
@@ -51,8 +52,10 @@ object DependencyLockPlugin extends AutoPlugin {
       val dest = dependencyLockFile.value
       val updateReport = update.value
       val exclusionFilter = dependencyLockModuleFilter.value
+      val configFilter = dependencyLockConfigurationFilter.value
+      val configurations = thisProject.value.configurations.filterNot(c => configFilter(c)).map(_.toConfigRef)
 
-      val lockFile = DependencyUtils.resolve(updateReport, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+      val lockFile = DependencyUtils.resolve(updateReport, exclusionFilter, configurations)
 
       val updateStatus = DependencyLockIO
         .readLockFile(dest)
@@ -72,9 +75,11 @@ object DependencyLockPlugin extends AutoPlugin {
       val logger: ManagedLogger = streams.value.log
       val updateReport: UpdateReport = update.value
       val exclusionFilter = dependencyLockModuleFilter.value
+      val configFilter = dependencyLockConfigurationFilter.value
+      val configurations = thisProject.value.configurations.filterNot(c => configFilter(c)).map(_.toConfigRef)
 
       val currentFile = dependencyLockRead.value.getOrElse(sys.error(MessageUtil.formatMessage("lock.status.missing")))
-      val updatedFile = DependencyUtils.resolve(updateReport, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+      val updatedFile = DependencyUtils.resolve(updateReport, exclusionFilter, configurations)
 
       val changes = currentFile.findChanges(updatedFile)
 
@@ -93,13 +98,15 @@ object DependencyLockPlugin extends AutoPlugin {
       val skipCheck = state.value.currentCommand.map(_.commandLine).exists(PluginTasks.contains)
       val checkMode = dependencyLockAutoCheck.value
       val exclusionFilter = dependencyLockModuleFilter.value
+      val configFilter = dependencyLockConfigurationFilter.value
+      val configurations = thisProject.value.configurations.filterNot(c => configFilter(c)).map(_.toConfigRef)
 
       if (checkMode != DependencyLockUpdateMode.CheckDisabled && !skipCheck) {
         logger.debug("Automatically checking lockfile")
 
         dependencyLockRead.value match {
           case Some(currentFile) =>
-            val updatedFile = DependencyUtils.resolve(report, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+            val updatedFile = DependencyUtils.resolve(report, exclusionFilter, configurations)
 
             val changes = currentFile.findChanges(updatedFile)
 
@@ -136,6 +143,7 @@ object DependencyLockPlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
-    dependencyLockModuleFilter := DependencyFilter.fnToModuleFilter(_ => false)
+    dependencyLockModuleFilter := DependencyFilter.fnToModuleFilter(_ => false),
+    dependencyLockConfigurationFilter := DependencyFilter.fnToConfigurationFilter(_ => false)
   )
 }
