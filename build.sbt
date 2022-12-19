@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "software.purpledragon" %% "text-utils" % "1.3.1",
-  "org.scalatest"         %% "scalatest"  % "3.2.13" % Test,
+  "org.scalatest"         %% "scalatest"  % "3.2.14" % Test,
 )
 
 organizationName := "Michael Stringer"
