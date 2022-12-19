@@ -55,8 +55,7 @@ object DependencyLockPlugin extends AutoPlugin {
       val configFilter = dependencyLockConfigurationFilter.value
       val configurations = thisProject.value.configurations.filterNot(c => configFilter(c)).map(_.toConfigRef)
 
-      val lockFile =
-        DependencyUtils.resolve(updateReport, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+      val lockFile = DependencyUtils.resolve(updateReport, exclusionFilter, configurations)
 
       val updateStatus = DependencyLockIO
         .readLockFile(dest)
@@ -80,8 +79,7 @@ object DependencyLockPlugin extends AutoPlugin {
       val configurations = thisProject.value.configurations.filterNot(c => configFilter(c)).map(_.toConfigRef)
 
       val currentFile = dependencyLockRead.value.getOrElse(sys.error(MessageUtil.formatMessage("lock.status.missing")))
-      val updatedFile =
-        DependencyUtils.resolve(updateReport, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+      val updatedFile = DependencyUtils.resolve(updateReport, exclusionFilter, configurations)
 
       val changes = currentFile.findChanges(updatedFile)
 
@@ -108,8 +106,7 @@ object DependencyLockPlugin extends AutoPlugin {
 
         dependencyLockRead.value match {
           case Some(currentFile) =>
-            val updatedFile =
-              DependencyUtils.resolve(report, exclusionFilter, thisProject.value.configurations.map(_.toConfigRef))
+            val updatedFile = DependencyUtils.resolve(report, exclusionFilter, configurations)
 
             val changes = currentFile.findChanges(updatedFile)
 
