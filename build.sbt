@@ -28,7 +28,7 @@ scriptedLaunchOpts           := {
     Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 }
 
-ThisBuild / scapegoatVersion := "1.4.15"
+ThisBuild / scapegoatVersion := "2.1.0"
 
 developers := List(
   Developer("stringbean", "Michael Stringer", "@the_stringbean", url("https://github.com/stringbean")),
