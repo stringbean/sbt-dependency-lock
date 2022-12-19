@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/stringbean/sbt-dependency-lock/ci.yml?branch=main)](https://github.com/stringbean/sbt-dependency-lock/actions/workflows/ci.yml)
 [![Codacy grade](https://img.shields.io/codacy/grade/d45ca406c90c45c88a3a317563bc3302?label=codacy)](https://app.codacy.com/gh/stringbean/sbt-dependency-lock)
 [![Known Vulnerabilities](https://snyk.io/test/github/stringbean/sbt-dependency-lock/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/stringbean/sbt-dependency-lock?targetFile=build.sbt)
-![Maven Central](https://maven-badges.herokuapp.com/maven-central/software.purpledragon/sbt-dependency-lock/badge.svg?style=flat) 
+[![sbt-dependency-lock Scala version support](https://index.scala-lang.org/stringbean/sbt-dependency-lock/sbt-dependency-lock/latest.svg)](https://index.scala-lang.org/stringbean/sbt-dependency-lock/sbt-dependency-lock) 
 [![GitHub Discussions](https://img.shields.io/github/discussions/stringbean/sbt-dependency-lock)](https://github.com/stringbean/sbt-dependency-lock/discussions)
 
 An sbt plugin to create a dependency lockfile similar to `package-lock.json` for npm or `Gemfile.lock` for RubyGems.
