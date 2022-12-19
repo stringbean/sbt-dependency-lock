@@ -16,11 +16,11 @@
 
 package software.purpledragon.sbt.lock
 
-import sbt._
-import sbt.Keys._
+import sbt.*
+import sbt.Keys.*
 import sbt.internal.util.ManagedLogger
-import sbt.librarymanagement.{DependencyFilter, ModuleFilter, ConfigurationFilter}
-import software.purpledragon.sbt.lock.DependencyLockUpdateMode._
+import sbt.librarymanagement.{ConfigurationFilter, DependencyFilter, ModuleFilter}
+import software.purpledragon.sbt.lock.DependencyLockUpdateMode.*
 import software.purpledragon.sbt.lock.model.{DependencyLockFile, LockFileMatches}
 import software.purpledragon.sbt.lock.util.MessageUtil
 
@@ -41,7 +41,7 @@ object DependencyLockPlugin extends AutoPlugin {
     val dependencyLockAutoCheck = settingKey[DependencyLockUpdateMode]("automatically check lockfile after update")
   }
 
-  import autoImport._
+  import autoImport.*
 
   // task names to skip auto-check if we're inside of
   private val PluginTasks = Seq("dependencyLockWrite", "dependencyLockCheck", "dependencyLockRead")
@@ -138,12 +138,12 @@ object DependencyLockPlugin extends AutoPlugin {
       Def.task {
         report
       }
-    }.value
+    }.value,
   )
 
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
     dependencyLockModuleFilter := DependencyFilter.fnToModuleFilter(_ => false),
-    dependencyLockConfigurationFilter := DependencyFilter.fnToConfigurationFilter(_ => false)
+    dependencyLockConfigurationFilter := DependencyFilter.fnToConfigurationFilter(_ => false),
   )
 }

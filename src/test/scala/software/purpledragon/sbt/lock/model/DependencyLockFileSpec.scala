@@ -36,8 +36,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
         "1.0.0",
         SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
         SortedSet("test-1")),
-      ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2"))
-    )
+      ResolvedDependency("com.example", "package-2", "1.2.0", SortedSet.empty, SortedSet("test-2")),
+    ),
   )
 
   "findChanges" should "return LockFileMatches for identical lockfiles" in {
@@ -106,7 +106,7 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
         "package-1",
         "2.0.0",
         SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
-        SortedSet("test-1", "test-2"))
+        SortedSet("test-1", "test-2")),
     )
 
     left.findChanges(right) shouldBe LockFileDiffers(
@@ -123,8 +123,8 @@ class DependencyLockFileSpec extends AnyFlatSpec with Matchers {
           SortedSet(ResolvedArtifact("package-1.jar", "hash-1")),
           SortedSet(ResolvedArtifact("package-1.jar", "hash-1a")),
           SortedSet("test-1"),
-          SortedSet("test-1", "test-2")
-        ))
+          SortedSet("test-1", "test-2"),
+        )),
     )
   }
 }

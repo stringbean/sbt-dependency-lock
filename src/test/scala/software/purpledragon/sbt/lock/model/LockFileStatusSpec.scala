@@ -102,17 +102,17 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
             "dependency-1",
             "1.1",
             oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
-            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890"))
+            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890")),
           ),
           testChangedDependencyArtifacts(
             "dependency-2",
             "1.1.2",
             oldArtifacts = Seq(
               ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
-              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc")
-            )
-          )
-        )
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc"),
+            ),
+          ),
+        ),
       )
       .toShortReport shouldBe expected
   }
@@ -223,17 +223,17 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
             "dependency-1",
             "1.1",
             oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
-            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890"))
+            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890")),
           ),
           testChangedDependencyArtifacts(
             "dependency-2",
             "1.1.2",
             oldArtifacts = Seq(
               ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
-              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc")
-            )
-          )
-        )
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc"),
+            ),
+          ),
+        ),
       )
       .toLongReport shouldBe expected
   }
@@ -259,18 +259,18 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
         Seq(
           testDependency(name = "added-3"),
           testDependency(name = "added-2"),
-          testDependency(org = "net.example", name = "added-1")
+          testDependency(org = "net.example", name = "added-1"),
         ),
         Seq(
           testDependency(name = "removed-1"),
           testDependency(name = "removed-3"),
-          testDependency(name = "removed-2")
+          testDependency(name = "removed-2"),
         ),
         Seq(
           testChangedDependency(name = "changed-3", newVersion = "1.2"),
           testChangedDependency(name = "changed-2", newVersion = "1.3"),
-          testChangedDependency(org = "net.example", name = "changed-1", newVersion = "1.0.1")
-        )
+          testChangedDependency(org = "net.example", name = "changed-1", newVersion = "1.0.1"),
+        ),
       )
       .toLongReport
 
@@ -310,8 +310,8 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
             name = "configs",
             newVersion = "1.0",
             newConfigurations = SortedSet("compile")),
-          testChangedDependency(org = "org.example", name = "both", oldConfigurations = SortedSet("compile"))
-        )
+          testChangedDependency(org = "org.example", name = "both", oldConfigurations = SortedSet("compile")),
+        ),
       )
       .toLongReport
 
@@ -360,7 +360,7 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
       oldArtifacts.to[SortedSet],
       newArtifacts.to[SortedSet],
       SortedSet("compile"),
-      SortedSet("compile")
+      SortedSet("compile"),
     )
   }
 }
