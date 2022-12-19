@@ -3,9 +3,6 @@ organization := "software.purpledragon"
 
 enablePlugins(SbtPlugin, ParadoxSitePlugin, GhpagesPlugin)
 
-// target sbt 1.2.8 to allow 1.0+ compatibility
-pluginCrossBuild / sbtVersion := "1.2.8"
-
 val circeVersion = "0.14.3"
 
 libraryDependencies ++= Seq(
