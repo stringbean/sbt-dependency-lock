@@ -25,11 +25,14 @@ import software.purpledragon.sbt.lock.model.{DependencyLockFile, DependencyRef, 
 import scala.collection.{immutable, mutable, SortedSet}
 
 object DependencyUtils {
+
+  type HashAlgo = String
+
   def resolve(updateReport: UpdateReport, exclusion: ModuleFilter, configs: Seq[ConfigRef]): DependencyLockFile = {
     val configurations: immutable.Seq[ConfigurationReport] =
       updateReport.configurations.filter(config => configs.contains(config.configuration))
 
-    val checksumCache = mutable.Map.empty[File, String]
+    val checksumCache = mutable.Map.empty[(File, HashAlgo), String]
 
     val resolvedDependencies =
       configurations.foldLeft(Map.empty[DependencyRef, ResolvedDependency]) { (acc, conf) =>
@@ -55,7 +58,7 @@ object DependencyUtils {
       acc: Map[DependencyRef, ResolvedDependency],
       configuration: String,
       module: ModuleReport,
-      checksumCache: mutable.Map[File, String]): Map[DependencyRef, ResolvedDependency] = {
+      checksumCache: mutable.Map[(File, HashAlgo), String]): Map[DependencyRef, ResolvedDependency] = {
 
     val ref = DependencyRef(module.module)
     val dep = acc
@@ -67,17 +70,18 @@ object DependencyUtils {
 
   private def generateResolvedDependency(
       module: ModuleReport,
-      checksumCache: mutable.Map[File, String]): ResolvedDependency = {
+      checksumCache: mutable.Map[(File, HashAlgo), String]): ResolvedDependency = {
 
     val artifacts: immutable.Seq[ResolvedArtifact] = module.artifacts map { case (artifact, file) =>
-      val hash = checksumCache.getOrElseUpdate(file, hashFile(file))
+      val sha1 = checksumCache.getOrElseUpdate((file, "sha1"), HashingUtils.sha1(file))
+      val sha256 = checksumCache.getOrElseUpdate((file, "sha256"), HashingUtils.sha256(file))
 
       val qualifier = artifact.`type` match {
         case "jar" | "bundle" => ""
         case q => s"-$q"
       }
 
-      ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", hash)
+      ResolvedArtifact(s"${artifact.name}$qualifier.${artifact.extension}", sha1, sha256, artifact.url.map(_.toString))
     }
 
     ResolvedDependency(
@@ -88,5 +92,4 @@ object DependencyUtils {
       SortedSet.empty)
   }
 
-  private def hashFile(file: File): String = s"sha1:${Hash.toHex(Hash(file))}"
 }
