@@ -16,7 +16,9 @@
       "artifacts" : [
         {
           "name" : "scala-library.jar",
-          "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
+          "sha1" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda",
+          "sha256" : "sha256:0a57044d10895f8d3dd66ad4286891f607169d948845ac51e17b4c1cf0ab569d",
+          "url" : "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.10/scala-library-2.12.10.jar"
         }
       ],
       "configurations" : [
@@ -32,7 +34,9 @@
       "artifacts" : [
         {
           "name" : "scala-xml_2.12.jar",
-          "hash" : "sha1:5d38ac30beb8420dd395c0af447ba412158965e6"
+          "sha1" : "sha1:5d38ac30beb8420dd395c0af447ba412158965e6",
+          "sha256" : "sha256:1b48dc206f527b7604ef32492ada8e71706c63a65d999e0cabdafdc5793b4d63",
+          "url" : "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.2.0/scala-xml_2.12-1.2.0.jar"
         }
       ],
       "configurations" : [
@@ -46,7 +50,9 @@
       "artifacts" : [
         {
           "name" : "scala-reflect.jar",
-          "hash" : "sha1:14cb7beb516cd8e07716133668c427792122c926"
+          "sha1" : "sha1:14cb7beb516cd8e07716133668c427792122c926",
+          "sha256" : "sha256:56b609e1bab9144fb51525bfa01ccd72028154fc40a58685a1e9adcbe7835730",
+          "url" : "https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.10/scala-reflect-2.12.10.jar"
         }
       ],
       "configurations" : [
@@ -60,7 +66,9 @@
       "artifacts" : [
         {
           "name" : "scalactic_2.12.jar",
-          "hash" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277"
+          "sha1" : "sha1:b50559dfc4a691c1089f9c8812e1d6fd17f80277",
+          "sha256" : "sha256:5f9ad122f54e9a0112ff4fcaadfb2802d8796f5dde021caa4c831067fca68469",
+          "url" : "https://repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.8/scalactic_2.12-3.0.8.jar"
         }
       ],
       "configurations" : [
@@ -74,7 +82,9 @@
       "artifacts" : [
         {
           "name" : "commons-lang3.jar",
-          "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
+          "sha1" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5",
+          "sha256" : "sha256:de2e1dcdcf3ef917a8ce858661a06726a9a944f28e33ad7f9e08bea44dc3c230",
+          "url" : "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar"
         }
       ],
       "configurations" : [
@@ -90,7 +100,9 @@
       "artifacts" : [
         {
           "name" : "scalatest_2.12.jar",
-          "hash" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f"
+          "sha1" : "sha1:8493ffa579676977b810a7a9fdc23af9d3c8af7f",
+          "sha256" : "sha256:a4045cea66f3eaab525696f3000d7d610593778bd070e98349a7066f872844cd",
+          "url" : "https://repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.8/scalatest_2.12-3.0.8.jar"
         }
       ],
       "configurations" : [

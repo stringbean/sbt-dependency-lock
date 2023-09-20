@@ -101,15 +101,17 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
           testChangedDependencyArtifacts(
             "dependency-1",
             "1.1",
-            oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
-            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890")),
+            oldArtifacts = Seq(
+              ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701", "sha256:a", None)),
+            newArtifacts =
+              Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890", "sha256:b", None)),
           ),
           testChangedDependencyArtifacts(
             "dependency-2",
             "1.1.2",
             oldArtifacts = Seq(
-              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
-              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc"),
+              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701", "sha256:a", None),
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc", "sha256:b", None),
             ),
           ),
         ),
@@ -222,15 +224,17 @@ class LockFileStatusSpec extends AnyFlatSpec with Matchers {
           testChangedDependencyArtifacts(
             "dependency-1",
             "1.1",
-            oldArtifacts = Seq(ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701")),
-            newArtifacts = Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890")),
+            oldArtifacts = Seq(
+              ResolvedArtifact("artifact-2.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701", "sha256:a", None)),
+            newArtifacts =
+              Seq(ResolvedArtifact("artifact-1.jar", "sha1:2b8b815229aa8a61e483fb4ba0588b8b6c491890", "sha256:b", None)),
           ),
           testChangedDependencyArtifacts(
             "dependency-2",
             "1.1.2",
             oldArtifacts = Seq(
-              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701"),
-              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc"),
+              ResolvedArtifact("artifact-a.jar", "sha1:07c10d545325e3a6e72e06381afe469fd40eb701", "sha256:a", None),
+              ResolvedArtifact("artifact-b.jar", "sha1:cfa4f316351a91bfd95cb0644c6a2c95f52db1fc", "sha256:b", None),
             ),
           ),
         ),

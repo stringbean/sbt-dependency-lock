@@ -15,7 +15,9 @@
       "artifacts" : [
         {
           "name" : "commons-lang3.jar",
-          "hash" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
+          "sha1" : "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5",
+          "sha256" : "sha256:de2e1dcdcf3ef917a8ce858661a06726a9a944f28e33ad7f9e08bea44dc3c230",
+          "url" : "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar"
         }
       ],
       "configurations" : [
@@ -30,7 +32,9 @@
       "artifacts" : [
         {
           "name" : "scala-library.jar",
-          "hash" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda"
+          "sha1" : "sha1:3509860bc2e5b3da001ed45aca94ffbe5694dbda",
+          "sha256" : "sha256:0a57044d10895f8d3dd66ad4286891f607169d948845ac51e17b4c1cf0ab569d",
+          "url" : "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.10/scala-library-2.12.10.jar"
         }
       ],
       "configurations" : [
