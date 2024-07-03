@@ -1,7 +1,7 @@
 name         := "sbt-dependency-lock"
 organization := "software.purpledragon"
 
-enablePlugins(SbtPlugin, ParadoxSitePlugin, GhpagesPlugin)
+enablePlugins(SbtPlugin, SitePreviewPlugin, ParadoxSitePlugin, GhpagesPlugin)
 
 val circeVersion = "0.14.3"
 
