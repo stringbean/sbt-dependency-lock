@@ -3,7 +3,7 @@ organization := "software.purpledragon"
 
 enablePlugins(SbtPlugin, SitePreviewPlugin, ParadoxSitePlugin, GhpagesPlugin)
 
-val circeVersion = "0.14.3"
+val circeVersion = "0.14.9"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
@@ -13,12 +13,12 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "software.purpledragon" %% "text-utils" % "1.3.1",
-  "org.scalatest"         %% "scalatest"  % "3.2.14" % Test,
+  "org.scalatest"         %% "scalatest"  % "3.2.19" % Test,
 )
 
 organizationName := "Michael Stringer"
 startYear        := Some(2019)
-licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
 scriptedLaunchOpts           := {
   scriptedLaunchOpts.value ++
@@ -39,7 +39,7 @@ scmInfo        := Some(
 git.remoteRepo := "git@github.com:stringbean/sbt-dependency-lock.git"
 publishTo      := sonatypePublishToBundle.value
 
-import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations.*
 
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
 
