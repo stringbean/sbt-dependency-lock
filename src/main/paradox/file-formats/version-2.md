@@ -2,6 +2,7 @@
 
 * **Added in:** _N/A_
 * **Removed in:** _N/A_
+* **Schema:** [lockfile-v2.schema.json](../lockfile-v2.schema.json)
 
 @@@warning
 This version of the lockfile is currently a proposal and has not been implemented yet.
@@ -185,3 +186,65 @@ After:
   ]
 }
 ```
+
+## Examples
+
+```json
+{
+  "lockVersion": 2,
+  "timestamp": "2024-06-04T17:33:05.944Z",
+  "configurations": [
+    "compile",
+    "optional",
+    "provided",
+    "runtime",
+    "test"
+  ],
+  "dependencies": [
+    {
+      "org": "org.apache.commons",
+      "name": "commons-lang3",
+      "version": "3.9",
+      "license": "Apache-2.0", 
+      "artifacts": [
+        {
+          "name": "commons-lang3.jar",
+          "url": "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar",
+          "hash": {
+            "sha1": "0122c7cee69b53ed4a7681c03d4ee4c0e2765da5",
+            "sha256": "de2e1dcdcf3ef917a8ce858661a06726a9a944f28e33ad7f9e08bea44dc3c230"
+          }
+        }
+      ],
+      "configurations": [
+        "test",
+        "compile",
+        "runtime"
+      ]
+    },
+    {
+      "org": "org.scala-lang",
+      "name": "scala-library",
+      "version": "2.12.10",
+      "license": "Apache-2.0",
+      "artifacts": [
+        {
+          "name": "scala-library.jar",
+          "url": "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.10/scala-library-2.12.10.jar",
+          "hash": {
+            "sha1": "3509860bc2e5b3da001ed45aca94ffbe5694dbda",
+            "sha256": "0a57044d10895f8d3dd66ad4286891f607169d948845ac51e17b4c1cf0ab569d"
+          }
+        }
+      ],
+      "configurations": [
+        "test",
+        "compile",
+        "runtime"
+      ]
+    }
+  ]
+}
+```
+
+

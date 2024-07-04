@@ -2,6 +2,7 @@
 
 * **Added in:** 0.1.0
 * **Removed in:** _N/A_
+* **Schema:** [lockfile-v1.schema.json](../lockfile-v1.schema.json)
 
 ## Types
 
