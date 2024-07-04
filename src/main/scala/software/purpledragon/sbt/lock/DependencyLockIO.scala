@@ -18,10 +18,10 @@ package software.purpledragon.sbt.lock
 
 import java.io.File
 
-import io.circe.parser._
-import io.circe.syntax._
+import io.circe.parser.*
+import io.circe.syntax.*
 import sbt.io.IO
-import software.purpledragon.sbt.lock.model.Decoders._
+import software.purpledragon.sbt.lock.model.Decoders.*
 import software.purpledragon.sbt.lock.model.DependencyLockFile
 
 object DependencyLockIO {

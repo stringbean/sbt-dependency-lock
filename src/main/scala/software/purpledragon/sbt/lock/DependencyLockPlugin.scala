@@ -141,7 +141,7 @@ object DependencyLockPlugin extends AutoPlugin {
     }.value,
   )
 
-  override def globalSettings: Seq[Def.Setting[_]] = Seq(
+  override def globalSettings: Seq[Def.Setting[?]] = Seq(
     dependencyLockAutoCheck := DependencyLockUpdateMode.WarnOnError,
     dependencyLockModuleFilter := DependencyFilter.fnToModuleFilter(_ => false),
     dependencyLockConfigurationFilter := DependencyFilter.fnToConfigurationFilter(_ => false),

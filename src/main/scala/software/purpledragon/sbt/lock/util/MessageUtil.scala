@@ -25,11 +25,11 @@ object MessageUtil {
   val messages: ResourceBundle = ResourceBundle.getBundle("messages")
 
   def format(template: String, args: Any*): String = {
-    MessageFormat.format(template, args.map(unwrapArg): _*)
+    MessageFormat.format(template, args.map(unwrapArg)*)
   }
 
   def formatMessage(key: String, args: Any*): String = {
-    format(messages.getString(key), args.map(unwrapArg): _*)
+    format(messages.getString(key), args.map(unwrapArg)*)
   }
 
   def formatPlural(baseKey: String, count: Int, args: Any*): String = {
@@ -40,7 +40,7 @@ object MessageUtil {
     )
 
     val choice = new ChoiceFormat(Array(0, 1, 2), formatStrings)
-    format(choice.format(count), count +: args: _*)
+    format(choice.format(count), (count +: args)*)
   }
 
   @SuppressWarnings(Array("AsInstanceOf"))
