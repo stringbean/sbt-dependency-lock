@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stringbean.github.io/sbt-dependency-lock/lockfile-v1.schema.json",
+  "title": "sbt-dependency-lock lockfile v1",
+  "description": "Lockfile for sbt-dependency-lock - version 1 format",
+  "type": "object",
+  "required": [
+    "lockVersion",
+    "timestamp",
+    "configurations",
+    "dependencies"
+  ],
+  "properties": {
+    "lockVersion": {
+      "type": "integer",
+      "description": "Version of the lockfile"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "File generation timestamp"
+    },
+    "configurations": {
+      "type": "array",
+      "description": "List of sbt build configurations in the current project",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "List of all the dependencies in the current project",
+      "items": {
+        "required": [
+          "org",
+          "name",
+          "version",
+          "artifacts"
+        ],
+        "properties": {
+          "org": {
+            "type": "string",
+            "description": "Organisation of the resolved dependency from Ivy/Maven"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the resolved dependency from Ivy/Maven"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the resolved dependency"
+          },
+          "artifacts": {
+            "type": "array",
+            "description": "List of all the artifacts for the dependency",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Filename of the artifact",
+                  "examples": [
+                    "commons-lang3.jar"
+                  ]
+                },
+                "hash": {
+                  "type": "string",
+                  "description": "Checksum of the artifact prefixed with the checksum algorithm",
+                  "examples": [
+                    "sha1:0122c7cee69b53ed4a7681c03d4ee4c0e2765da5"
+                  ]
+                }
+              }
+            }
+          },
+          "configurations": {
+            "type": "array",
+            "description": "List of the sbt configurations that include this dependency",
+            "items": {
+              "type": "string",
+              "examples": [
+                [
+                  "compile",
+                  "test"
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

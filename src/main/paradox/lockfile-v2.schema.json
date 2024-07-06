@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stringbean.github.io/sbt-dependency-lock/lockfile-v2.schema.json",
+  "title": "sbt-dependency-lock lockfile v2",
+  "description": "Lockfile for sbt-dependency-lock - version 2 format",
+  "type": "object",
+  "required": [
+    "lockVersion",
+    "timestamp",
+    "configurations",
+    "dependencies"
+  ],
+  "properties": {
+    "lockVersion": {
+      "type": "integer",
+      "description": "Version of the lockfile"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "File generation timestamp"
+    },
+    "configurations": {
+      "type": "array",
+      "description": "List of sbt build configurations in the current project",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "List of all the dependencies in the current project",
+      "items": {
+        "required": [
+          "org",
+          "name",
+          "version",
+          "artifacts"
+        ],
+        "properties": {
+          "org": {
+            "type": "string",
+            "description": "Organisation of the resolved dependency from Ivy/Maven"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the resolved dependency from Ivy/Maven"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the resolved dependency"
+          },
+          "license": {
+            "type": "string",
+            "description": "License of the dependency (in SPDX identifier format)"
+          },
+          "artifacts": {
+            "type": "array",
+            "description": "List of all the artifacts for the dependency",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Filename of the artifact",
+                  "examples": [
+                    "commons-lang3.jar"
+                  ]
+                },
+                "hash": {
+                  "type": "object",
+                  "description": "Checksum of the artifact using different algorithms",
+                  "items": true,
+                  "required": [
+                    "sha1",
+                    "sha256"
+                  ],
+                  "examples": [
+                    {
+                      "sha1": "3509860bc2e5b3da001ed45aca94ffbe5694dbda",
+                      "sha256": "0a57044d10895f8d3dd66ad4286891f607169d948845ac51e17b4c1cf0ab569d"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "configurations": {
+            "type": "array",
+            "description": "List of the sbt configurations that include this dependency",
+            "items": {
+              "type": "string",
+              "examples": [
+                [
+                  "compile",
+                  "test"
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
-# Version 1
+# Version 1 (current)
 
 * **Added in:** 0.1.0
 * **Removed in:** _N/A_
+* **Schema:** [lockfile-v1.schema.json](../lockfile-v1.schema.json)
 
 ## Types
 
@@ -13,7 +14,7 @@ dependencies.
 #### lockVersion
 
 * **Type:** Integer.
-* **Description:** Version of the lockfile - always 1.
+* **Description:** Version of the lockfile: `1`.
 
 #### timestamp
 
