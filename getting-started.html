@@ -32,7 +32,7 @@
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-1.5.1*
+1.5.1
 </div>
 </div>
 <div class="nav-toc">
@@ -42,6 +42,7 @@
   <li><a href="file-formats/index.html" class="page">File Formats</a>
   <ul>
     <li><a href="file-formats/version-1.html" class="page">Version 1</a></li>
+    <li><a href="file-formats/version-2.html" class="page">Version 2</a></li>
   </ul></li>
 </ul>
 </div>
@@ -74,7 +75,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>sbt-dependency-lock
 </a>
 <div class="version-number">
-1.5.1*
+1.5.1
 </div>
 </div>
 <div class="nav-toc">
@@ -84,6 +85,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><a href="file-formats/index.html" class="page">File Formats</a>
   <ul>
     <li><a href="file-formats/version-1.html" class="page">Version 1</a></li>
+    <li><a href="file-formats/version-2.html" class="page">Version 2</a></li>
   </ul></li>
 </ul>
 </div>
@@ -112,7 +114,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h1><a href="#getting-started" name="getting-started" class="anchor"><span class="anchor-link"></span></a>Getting Started</h1>
 <h2><a href="#setup" name="setup" class="anchor"><span class="anchor-link"></span></a>Setup</h2>
 <p>Install the plugin by adding the following to <code>project/plugins.sbt</code>:</p>
-<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;software.purpledragon&quot; % &quot;sbt-dependency-lock&quot; % &quot;1.5.1-SNAPSHOT&quot;)
+<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;software.purpledragon&quot; % &quot;sbt-dependency-lock&quot; % &quot;1.5.1&quot;)
 </code></pre>
 <p>And then generate a lockfile with <code>sbt dependencyLockWrite</code>. This will resolve dependencies and output a lockfile containing all dependencies (including transitive ones) to <code>build.sbt.lock</code>.</p><div class="callout note "><div class="callout-title">Note</div>
 <p>The generated <code>build.sbt.lock</code> file should be checked into source control with the rest of the project source code.</p></div>
@@ -166,7 +168,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 </code></pre></li>
 </ol>
 <div class="source-github">
-The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/master/src/main/paradox/getting-started.md">here</a>.
+The source code for this page can be found <a href="https://github.com/stringbean/sbt-dependency-lock/tree/v1.5.1/src/main/paradox/getting-started.md">here</a>.
 </div>
 
 <div class="nav-next">
@@ -182,7 +184,12 @@ The source code for this page can be found <a href="https://github.com/stringbea
   <li><a href="getting-started.html#getting-started" class="header">Getting Started</a>
   <ul>
     <li><a href="getting-started.html#setup" class="header">Setup</a></li>
-    <li><a href="getting-started.html#checking-for-dependency-changes" class="header">Checking for Dependency Changes</a></li>
+    <li><a href="getting-started.html#checking-for-dependency-changes" class="header">Checking for Dependency Changes</a>
+    <ul>
+      <li><a href="getting-started.html#valid-lockfile" class="header">Valid Lockfile</a></li>
+      <li><a href="getting-started.html#missing-lockfile" class="header">Missing Lockfile</a></li>
+      <li><a href="getting-started.html#lockfile-mismatch" class="header">Lockfile Mismatch</a></li>
+    </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -250,7 +257,7 @@ The source code for this page can be found <a href="https://github.com/stringbea
 <script type="text/javascript" src="lib/prettify/prettify.js"></script>
 <script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
 <script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
-<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.5.1-SNAPSHOT', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.5.1', 'https://github.com/stringbean/sbt-dependency-lock')});</script>
 
 
 </html>
