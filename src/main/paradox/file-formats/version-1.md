@@ -1,4 +1,4 @@
-# Version 1
+# Version 1 (current)
 
 * **Added in:** 0.1.0
 * **Removed in:** _N/A_

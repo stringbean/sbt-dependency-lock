@@ -1,4 +1,4 @@
-# Version 2
+# Version 2 (proposal)
 
 * **Added in:** _N/A_
 * **Removed in:** _N/A_
