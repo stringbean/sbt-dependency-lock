@@ -56,6 +56,11 @@ Details of a resolved dependency.
 * **Type:** String.
 * **Description:** Version of the resolved dependency.
 
+#### license
+
+* **Type:** String.
+* **Description:** License of the dependency (in SPDX identifier format).
+
 #### artifacts
 
 * **Type:** Array of `Artifact`.
@@ -78,9 +83,24 @@ Details of an artifact contained within a dependency.
 
 #### hash
 
-* **Type:** String (checksum).
+* **Type:** Array of `Artifact Hash`.
 * **Description:** Checksum of the artifact prefixed with the checksum algorithm.
-* **Note:** Currently only `sha1` is supported.
+
+
+### Artifact Hash
+
+Checksums for a dependency artifact. This is an object that contains one or more hashes for the artifact, currently only
+SHA-1 and SHA-256 are supported but more may be added in the future.
+
+#### sha1
+
+* **Type:** String.
+* **Description:** SHA-1 hash of the artifact.
+
+#### sha256
+
+* **Type:** String.
+* **Description:** SHA-256 hash of the artifact.
 
 ## Changes from Version 1
 
@@ -146,14 +166,39 @@ After:
   ]
 }
 ```
-### Additional Metadata in Artifacts
 
-Two new fields have been added to the 'Artifact' type:
+### License Metadata for Dependencies
 
-- `url` - the URL that the artifact was fetched from.
-- `license` - SPDX identifier of the license for the artifact.
+The license of each dependency has been added to the `Dependency` type. This makes it easier for other tooling to
+inspect the licenses used by a project.
 
-These make it easier for other tools to perform actions relating to dependencies.
+Before:
+
+```json
+{
+  "org": "org.apache.commons",
+  "name": "commons-lang3",
+  "version": "3.9",
+  "artifacts": [...]
+}
+```
+
+After:
+
+```json
+{
+  "org": "org.apache.commons",
+  "name": "commons-lang3",
+  "version": "3.9",
+  "license": "Apache-2.0",
+  "artifacts": [...]
+}
+```
+
+### Source URL Metadata for Artifacts
+
+The source URL of each artifact has been added to the `Artifact` type. This allows other tooling to download the
+artifacts resolved by sbt.
 
 Before:
 
@@ -180,14 +225,15 @@ After:
   "artifacts": [
     {
       "name": "commons-lang3.jar",
-      "url": "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar",
-      "license": "Apache-2.0"
+      "url": "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar"
     }
   ]
 }
 ```
 
 ## Examples
+
+### With Timestamp
 
 ```json
 {
@@ -247,4 +293,41 @@ After:
 }
 ```
 
+### Without Timestamp
 
+```json
+{
+  "lockVersion": 2,
+  "timestamp": null,
+  "configurations": [
+    "compile",
+    "optional",
+    "provided",
+    "runtime",
+    "test"
+  ],
+  "dependencies": [
+    {
+      "org": "org.scala-lang",
+      "name": "scala-library",
+      "version": "2.12.10",
+      "license": "Apache-2.0",
+      "artifacts": [
+        {
+          "name": "scala-library.jar",
+          "url": "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.10/scala-library-2.12.10.jar",
+          "hash": {
+            "sha1": "3509860bc2e5b3da001ed45aca94ffbe5694dbda",
+            "sha256": "0a57044d10895f8d3dd66ad4286891f607169d948845ac51e17b4c1cf0ab569d"
+          }
+        }
+      ],
+      "configurations": [
+        "test",
+        "compile",
+        "runtime"
+      ]
+    }
+  ]
+}
+```
